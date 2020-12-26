@@ -2,8 +2,7 @@
 version: 2.1
 # Use a package of configuration called an orb.
 orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
+  slack: circleci/slack@4.1.4
 
 aliases:
   - &restore-node-modules-cache
@@ -65,6 +64,12 @@ jobs:
       - run: *install-yarn
       - restore_cache: *restore-node-modules-cache
       - run: yarn compile
+      - slack/notify:
+        event: fail
+        template: basic_fail_1
+      - slack/notify:
+        event: pass
+        template: success_tagged_deploy_1
   
   build:
     executor: default-executor
@@ -73,6 +78,12 @@ jobs:
       - run: *install-yarn
       - restore_cache: *restore-node-modules-cache
       - run: yarn build
+      - slack/notify:
+        event: fail
+        template: basic_fail_1
+      - slack/notify:
+        event: pass
+        template: success_tagged_deploy_1
 
   lint:
     executor: default-executor
@@ -81,6 +92,12 @@ jobs:
       - run: *install-yarn
       - restore_cache: *restore-node-modules-cache
       - run: yarn lint
+      - slack/notify:
+        event: fail
+        template: basic_fail_1
+      - slack/notify:
+        event: pass
+        template: success_tagged_deploy_1
   
   run-app-tests:
     executor: default-executor
@@ -89,6 +106,12 @@ jobs:
       - run: *install-yarn
       - restore_cache: *restore-node-modules-cache
       - run: yarn test --forceExit --maxWorkers=2
+      - slack/notify:
+        event: fail
+        template: basic_fail_1
+      - slack/notify:
+        event: pass
+        template: success_tagged_deploy_1
 
 # Orchestrate or schedule a set of jobs
 workflows:
