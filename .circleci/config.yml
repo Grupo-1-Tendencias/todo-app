@@ -46,16 +46,14 @@ jobs:
   checkout-code:
     executor: default-executor
     steps:
-      - checkout
-      - restore_cache: *restore-yarn-cache
-      - restore_cache: *restore-node-modules-cache
-      - run: *install-yarn
-      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
-      - run:
-          name: Check if yarn.lock changed during install
-          command: git diff --exit-code yarn.lock
-      - save_cache: *save-node-modules-cache
-      - save_cache: *save-yarn-cache
+      - run: echo "deploy my app"
+      - slack/notify:
+          event: fail
+          mentions: '@EngineeringTeam'
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   compile-app:
     executor: default-executor
@@ -65,12 +63,12 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - run: yarn compile
       - slack/notify:
-        event: fail
-        template: basic_fail_1
+          event: fail
+          template: basic_fail_1
       - slack/notify:
-        event: pass
-        template: success_tagged_deploy_1
-  
+          event: pass
+          template: success_tagged_deploy_1
+
   build:
     executor: default-executor
     steps:
@@ -119,6 +117,8 @@ workflows:
   todo-app:
     # Run the welcome/run job in its own container
     jobs:
+      - slack/on-hold:
+          context: slack-secrets
       - checkout-code
       - build:
           requires: [checkout-code]
@@ -128,3 +128,29 @@ workflows:
           requires: [build]
       - run-app-tests:
           requires: [build]
+
+# workflows:
+#   todo-app:
+#     jobs:
+#       - test
+#       - slack/on-hold:
+#           context: slack-secrets
+#           filters:
+#             tags:
+#               only: /^v.*/
+#           requires:
+#             - test
+#       - pause_workflow:
+#           filters:
+#             tags:
+#               only: /^v.*/
+#           requires:
+#             - test
+#             - slack/on-hold
+#           type: approval
+#       - checkout-code:
+#           filters:
+#             tags:
+#               only: /^v.*/
+#           requires:
+#             - pause_workflow
