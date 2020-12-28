@@ -149,7 +149,7 @@ workflows:
           requires: [check-format]
       - lint:
           requires: [check-format]
-      - compile-app:
-          requires: [build]
+      # - compile-app:
+      #     requires: [build]
       - run-app-tests:
           requires: [build]
