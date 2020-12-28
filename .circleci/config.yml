@@ -40,16 +40,29 @@ executors:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
         environment:
-            AWS-REGION: us-east-2
+          AWS-REGION: us-east-2
 
 jobs:
+  check-format:
+    executor: default-executor
+    steps:
+      - checkout
+      - run: *install-yarn
+      - run: yarn prettier --check .
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
   checkout-code:
     executor: default-executor
     steps:
       - run: echo "deploy my app"
       - slack/notify:
           event: fail
-          mentions: '@EngineeringTeam'
+          mentions: "@EngineeringTeam"
           template: basic_fail_1
       - slack/notify:
           event: pass
@@ -60,7 +73,7 @@ jobs:
     steps:
       - checkout
       - run: *install-yarn
-      - restore_cache: *restore-node-modules-cache
+      # - restore_cache: *restore-node-modules-cache
       - run: yarn compile
       - slack/notify:
           event: fail
@@ -74,7 +87,7 @@ jobs:
     steps:
       - checkout
       - run: *install-yarn
-      - restore_cache: *restore-node-modules-cache
+      # - restore_cache: *restore-node-modules-cache
       - run: yarn build
       - slack/notify:
           event: fail
@@ -88,7 +101,7 @@ jobs:
     steps:
       - checkout
       - run: *install-yarn
-      - restore_cache: *restore-node-modules-cache
+      # - restore_cache: *restore-node-modules-cache
       - run: yarn lint
       - slack/notify:
           event: fail
@@ -96,13 +109,13 @@ jobs:
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
-  
+
   run-app-tests:
     executor: default-executor
     steps:
       - checkout
       - run: *install-yarn
-      - restore_cache: *restore-node-modules-cache
+      # - restore_cache: *restore-node-modules-cache
       - run: yarn test --forceExit --maxWorkers=2
       - slack/notify:
           event: fail
@@ -117,9 +130,8 @@ workflows:
   todo-app:
     # Run the welcome/run job in its own container
     jobs:
-      - slack/on-hold:
-          context: slack-secrets
       - checkout-code
+      - check-format
       - build:
           requires: [checkout-code]
       - lint:
@@ -128,29 +140,3 @@ workflows:
           requires: [build]
       - run-app-tests:
           requires: [build]
-
-# workflows:
-#   todo-app:
-#     jobs:
-#       - test
-#       - slack/on-hold:
-#           context: slack-secrets
-#           filters:
-#             tags:
-#               only: /^v.*/
-#           requires:
-#             - test
-#       - pause_workflow:
-#           filters:
-#             tags:
-#               only: /^v.*/
-#           requires:
-#             - test
-#             - slack/on-hold
-#           type: approval
-#       - checkout-code:
-#           filters:
-#             tags:
-#               only: /^v.*/
-#           requires:
-#             - pause_workflow
