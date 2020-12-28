@@ -2,6 +2,9 @@
   "name": "todo-app",
   "version": "1.0.0",
   "description": "Group 1 Final Project",
+  "workspaces": [
+    "backend"
+  ],
   "main": "index.js",
   "repository": "git@github.com:Grupo-1-Tendencias/todo-app.git",
   "author": "Fernando Gruning <fernandojgruning@gmail.com>",
@@ -10,9 +13,18 @@
   "scripts": {
     "build": "echo 'build'",
     "start": "echo 'start'",
-    "lint": "eslint . --ignore-path .gitignore",
-    "lint-fix": "yarn lint --fix",
-    "test": "jest --forceExit",
+    "start:backend": "yarn workspace backend start",
+    "compile:backend": "yarn workspace backend compile",
+    "dev:backend": "yarn workspace backend dev",
+    "dev:debug:backend": "yarn workspace backend dev:debug",
+    "lint": "yarn lint:backend",
+    "lint:backend": "yarn workspace backend lint",
+    "lint:fix": "yarn lint:fix:backend",
+    "lint:fix:backend": "yarn workspace backend lint:fix",
+    "test": "yarn test:backend",
+    "test:frontend": "jest --forceExit",
+    "test:backend": "yarn workspace backend test",
+    "test:debug:backend": "yarn workspace backend test:debug",
     "coverage": "yarn test --coverage"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 FROM node:14-alpine
-LABEL Author Carmine DiMascio <cdimascio@gmail.com>
+LABEL Author Fernando Gruning <fernandojgruning@gmail.com>
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

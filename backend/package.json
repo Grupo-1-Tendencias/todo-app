@@ -42,5 +42,5 @@
     "pino-pretty": "^4.3.0",
     "supertest": "^6.0.1"
   },
-  "author": "Carmine DiMascio <cdimascio@gmail.com> (https://github.com/cdimascio)"
+  "author": "Fernando Gruning"
 }
