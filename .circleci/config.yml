@@ -48,6 +48,7 @@ jobs:
     steps:
       - checkout
       - run: *install-yarn
+      - attach_workspace: { at: "." }
       - run: yarn prettier --check .
       - slack/notify:
           event: fail
@@ -81,6 +82,7 @@ jobs:
       - checkout
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
       - run: yarn compile
       - slack/notify:
           event: fail
@@ -95,6 +97,7 @@ jobs:
       - checkout
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
       - run: yarn build
       - slack/notify:
           event: fail
@@ -109,6 +112,7 @@ jobs:
       - checkout
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
       - run: yarn lint
       - slack/notify:
           event: fail
@@ -123,6 +127,7 @@ jobs:
       - checkout
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
       - run: yarn test --forceExit --maxWorkers=2
       - slack/notify:
           event: fail
