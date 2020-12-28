@@ -50,12 +50,6 @@ jobs:
       - run: *install-yarn
       - attach_workspace: { at: "." }
       - run: yarn prettier --check .
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
   checkout-code:
     executor: default-executor
@@ -99,12 +93,6 @@ jobs:
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: yarn build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
   lint:
     executor: default-executor
@@ -114,12 +102,6 @@ jobs:
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: yarn lint
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
   run-app-tests:
     executor: default-executor
@@ -142,17 +124,13 @@ workflows:
   todo-app:
     # Run the welcome/run job in its own container
     jobs:
-      - checkout-code:
-          context: slack-secrets
+      - checkout-code
       - check-format:
           requires: [checkout-code]
-          context: slack-secrets
       - build:
           requires: [check-format]
-          context: slack-secrets
       - lint:
           requires: [check-format]
-          context: slack-secrets
       # - compile-app:
       #     requires: [build]
       #     context: slack-secrets
