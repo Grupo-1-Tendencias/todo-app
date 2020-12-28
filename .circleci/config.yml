@@ -59,7 +59,14 @@ jobs:
   checkout-code:
     executor: default-executor
     steps:
-      - run: echo "deploy my app"
+      - checkout
+      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
+      - run:
+          name: Check if yarn.lock changed during install
+          command: git diff --exit-code yarn.lock
+      - persist_to_workspace:
+          root: "."
+          paths: [node_modules]
       - slack/notify:
           event: fail
           mentions: "@EngineeringTeam"
@@ -131,11 +138,12 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - checkout-code
-      - check-format
+      - check-format:
+          requires: [checkout-code]
       - build:
-          requires: [checkout-code]
+          requires: [check-format]
       - lint:
-          requires: [checkout-code]
+          requires: [check-format]
       - compile-app:
           requires: [build]
       - run-app-tests:
