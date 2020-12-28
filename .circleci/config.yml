@@ -78,12 +78,6 @@ jobs:
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: yarn compile
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
   build:
     executor: default-executor
@@ -111,6 +105,10 @@ jobs:
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: yarn test --forceExit --maxWorkers=2
+
+  notify:
+    executor: default-executor
+    steps:
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -133,7 +131,8 @@ workflows:
           requires: [check-format]
       # - compile-app:
       #     requires: [build]
-      #     context: slack-secrets
       - run-app-tests:
           requires: [build]
+      - notify:
+          requires: [run-app-tests, build]
           context: slack-secrets
