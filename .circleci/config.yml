@@ -70,15 +70,6 @@ jobs:
           event: pass
           template: success_tagged_deploy_1
 
-  compile-app:
-    executor: default-executor
-    steps:
-      - checkout
-      - run: *install-yarn
-      # - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: "." }
-      - run: yarn compile
-
   build:
     executor: default-executor
     steps:
@@ -104,7 +95,7 @@ jobs:
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
-      - run: yarn test --forceExit --maxWorkers=2
+      - run: yarn test
 
   notify:
     executor: default-executor
@@ -130,8 +121,6 @@ workflows:
           requires: [check-format]
       - lint:
           requires: [check-format]
-      # - compile-app:
-      #     requires: [build]
       - run-app-tests:
           requires: [build]
       - notify:
