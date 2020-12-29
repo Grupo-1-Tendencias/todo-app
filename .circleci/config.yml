@@ -122,7 +122,8 @@ workflows:
   todo-app:
     # Run the welcome/run job in its own container
     jobs:
-      - checkout-code
+      - checkout-code:
+          context: slack-secrets
       - check-format:
           requires: [checkout-code]
       - build:
