@@ -95,7 +95,7 @@ jobs:
       - run: *install-yarn
       # - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
-      - run: yarn test
+      - run: CI=true yarn test
 
   notify:
     executor: default-executor
