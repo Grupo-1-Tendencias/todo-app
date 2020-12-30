@@ -14,3 +14,4 @@ services:
     working_dir: /usr/src/app/backend
     volumes:
       - ./backend:/usr/src/app/backend:cached
+      - /usr/src/app/backend/node_modules
