@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  backend:
+    image: backend
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5000:5000
+    working_dir: /usr/src/app/backend
+    restart: always

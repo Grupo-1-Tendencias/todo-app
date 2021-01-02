@@ -1,12 +1,25 @@
+FROM node:14-alpine as builder
+ENV NODE_ENV=development
+
+WORKDIR /usr/src/app/backend
+COPY ["package.json", "yarn.lock", "./"]
+COPY . .
+RUN yarn install --silent
+RUN yarn compile
+
+# Backend
 FROM node:14-alpine
-LABEL Author Fernando Gruning <fernandojgruning@gmail.com>
+ENV APP_ID=backend
+ENV PORT=5000
+ENV LOG_LEVEL=debug
+ENV REQUEST_LIMIT=100kb
+ENV SESSION_SECRET=mySecret
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Swagger
+ENV SWAGGER_API_SPEC=/api/spec
 
-COPY . /usr/src/app
-RUN npm install
-
-EXPOSE 3000
-
-CMD [ "npm", "start" ]
+WORKDIR /usr/src/app/backend
+COPY --from=builder /usr/src/app/backend /usr/src/app/backend
+RUN yarn install --silent --production
+EXPOSE 5000
+CMD [ "yarn", "start"]

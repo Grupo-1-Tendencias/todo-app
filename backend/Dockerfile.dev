@@ -1,0 +1,16 @@
+FROM node:14-alpine
+ENV APP_ID=backend
+ENV PORT=5000
+ENV NODE_ENV=development
+ENV LOG_LEVEL=debug
+ENV REQUEST_LIMIT=100kb
+ENV SESSION_SECRET=mySecret
+#Swagger
+ENV SWAGGER_API_SPEC=/api/spec
+
+WORKDIR /usr/src/app/backend
+COPY ["package.json", "yarn.lock", ".babelrc", "./"]
+COPY . .
+RUN yarn install --silent
+EXPOSE 5000
+CMD ["yarn", "dev:debug"]
