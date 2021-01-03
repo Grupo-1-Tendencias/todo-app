@@ -5,25 +5,17 @@ orbs:
   slack: circleci/slack@4.1.4
 
 aliases:
-  - &restore-node-modules-cache
-    name: Restore node_modules cache
-    key: v1-yarn-deps-10122020-{{ checksum "yarn.lock" }}
-
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v1-yarn-10122020-cache
-
-  - &save-node-modules-cache
-    name: Save node_modules cache
-    paths:
-      - node_modules
-    key: v1-yarn-deps-10122020-{{ checksum "yarn.lock" }}
+    keys:
+      - yarn-packages-{{ checksum "yarn.lock" }}
+      - yarn-packages-
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v1-yarn-cache-10122020
+    key: yarn-packages-{{ checksum "yarn.lock" }}
 
   - &install-yarn sudo npm install --global --force yarn@1.22.4
 
@@ -55,10 +47,12 @@ jobs:
     executor: default-executor
     steps:
       - checkout
+      - restore_cache: *restore-yarn-cache
       - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - run:
           name: Check if yarn.lock changed during install
           command: git diff --exit-code yarn.lock
+      - save_cache: *save-yarn-cache
       - persist_to_workspace:
           root: "."
           paths: [node_modules]
@@ -74,8 +68,9 @@ jobs:
     executor: default-executor
     steps:
       - checkout
+      - restore_cache: *restore-yarn-cache
       - run: *install-yarn
-      # - restore_cache: *restore-node-modules-cache
+      - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: yarn build
 
@@ -83,8 +78,9 @@ jobs:
     executor: default-executor
     steps:
       - checkout
+      - restore_cache: *restore-yarn-cache
       - run: *install-yarn
-      # - restore_cache: *restore-node-modules-cache
+      - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: yarn lint
 
@@ -92,8 +88,9 @@ jobs:
     executor: default-executor
     steps:
       - checkout
+      - restore_cache: *restore-yarn-cache
       - run: *install-yarn
-      # - restore_cache: *restore-node-modules-cache
+      - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: CI=true yarn test
 
