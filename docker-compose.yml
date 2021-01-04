@@ -1,15 +1,17 @@
 version: "3.8"
 
 services:
-  backend:
-    image: backend
-    container_name: backend
+  backend-dev:
+    image: backend-dev
+    container_name: backend-dev
     build:
       context: backend
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.dev
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     ports:
       - 5000:5000
     working_dir: /usr/src/app/backend
-    restart: always
+    volumes:
+      - ./backend:/usr/src/app/backend:cached
+      - /usr/src/app/backend/node_modules
