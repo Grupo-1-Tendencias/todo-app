@@ -2,7 +2,7 @@
 version: 2.1
 # Use a package of configuration called an orb.
 orbs:
-  slack: circleci/slack@4.1.4
+  slack: circleci/slack@4.2.0
 
 aliases:
   - &restore-yarn-cache
@@ -23,6 +23,64 @@ aliases:
     branches:
       only:
         - master
+
+  - &slack-success-notification
+    event: pass
+    custom: |
+      {
+        "text": "",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "✅ *Success* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+            }
+          },
+          {
+            "type": "sections",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "View job"
+                },
+                "url": "${CIRCLE_BUILD_URL}"
+              }
+            ]
+          }
+        ]
+      }
+
+  - &slack-fail-notification
+    event: fail
+    custom: |
+      {
+        "text": "",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+            }
+          },
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "View job"
+                },
+                "url": "${CIRCLE_BUILD_URL}"
+              }
+            ]
+          }
+        ]
+      }
 
 executors:
   default-executor:
@@ -56,13 +114,6 @@ jobs:
       - persist_to_workspace:
           root: "."
           paths: [node_modules]
-      - slack/notify:
-          event: fail
-          mentions: "@EngineeringTeam"
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
   build:
     executor: default-executor
@@ -73,6 +124,8 @@ jobs:
       - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: yarn build
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
   lint:
     executor: default-executor
@@ -83,6 +136,8 @@ jobs:
       - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: yarn lint
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
   run-app-tests:
     executor: default-executor
@@ -93,16 +148,8 @@ jobs:
       - save_cache: *save-yarn-cache
       - attach_workspace: { at: "." }
       - run: CI=true yarn test
-
-  notify:
-    executor: default-executor
-    steps:
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
 # Orchestrate or schedule a set of jobs
 workflows:
@@ -110,16 +157,15 @@ workflows:
   todo-app:
     # Run the welcome/run job in its own container
     jobs:
-      - checkout-code:
-          context: slack-secrets
+      - checkout-code
       - check-format:
           requires: [checkout-code]
       - build:
           requires: [check-format]
+          context: slack-secrets
       - lint:
           requires: [check-format]
+          context: slack-secrets
       - run-app-tests:
           requires: [build]
-      - notify:
-          requires: [run-app-tests, build]
           context: slack-secrets
