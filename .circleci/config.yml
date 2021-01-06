@@ -91,7 +91,7 @@ commands:
         default: HEROKU_API_KEY
         type: env_var_name
       path:
-        default: ""
+        default: "."
         type: string
       app-name:
         default: $HEROKU_APP_NAME
@@ -108,11 +108,9 @@ commands:
     steps:
       - run:
           command: heroku container:login
-      - run: cd << parameters.path >>
-      - run: ls -a
       - run:
           command: |
-            heroku container:push -a <<parameters.app-name>> <<# parameters.recursive>>--recursive<</parameters.recursive>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+            cd << parameters.path >> && heroku container:push -a <<parameters.app-name>> <<# parameters.recursive>>--recursive<</parameters.recursive>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
           no_output_timeout: << parameters.no_output_timeout >>
           name: Push Docker image to Heroku
   release-docker-image:
@@ -122,7 +120,7 @@ commands:
         default: HEROKU_API_KEY
         type: env_var_name
       path:
-        default: ""
+        default: "."
         type: string
       app-name:
         default: $HEROKU_APP_NAME
@@ -136,11 +134,9 @@ commands:
     steps:
       - run:
           command: heroku container:login
-      - run: cd << parameters.path >>
-      - run: ls -a
       - run:
           command: |
-            heroku container:release -a <<parameters.app-name>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+            cd << parameters.path >> && heroku container:release -a <<parameters.app-name>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
           no_output_timeout: << parameters.no_output_timeout >>
           name: Release Docker image to Heroku
 
