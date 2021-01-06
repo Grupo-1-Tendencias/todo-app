@@ -90,6 +90,9 @@ commands:
       api-key:
         default: HEROKU_API_KEY
         type: env_var_name
+      path:
+        default: ""
+        type: string
       app-name:
         default: $HEROKU_APP_NAME
         type: string
@@ -105,6 +108,7 @@ commands:
     steps:
       - run:
           command: heroku container:login
+      - run: cd << parameters.path >>
       - run:
           command: |
             heroku container:push -a <<parameters.app-name>> <<# parameters.recursive>>--recursive<</parameters.recursive>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
@@ -116,6 +120,9 @@ commands:
       api-key:
         default: HEROKU_API_KEY
         type: env_var_name
+      path:
+        default: ""
+        type: string
       app-name:
         default: $HEROKU_APP_NAME
         type: string
@@ -128,6 +135,7 @@ commands:
     steps:
       - run:
           command: heroku container:login
+      - run: cd << parameters.path >>
       - run:
           command: |
             heroku container:release -a <<parameters.app-name>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
@@ -210,9 +218,9 @@ jobs:
       - heroku/install
       - setup_remote_docker:
           version: 19.03.13
-      - run: cd ./backend
       - push-docker-image:
           app-name: g1-todo-app-server-staging
+          path: ./backend
 
   deploy-server-staging:
     executor: heroku/default
@@ -221,9 +229,9 @@ jobs:
       - heroku/install
       - setup_remote_docker:
           version: 19.03.13
-      - run: cd ./backend
       - release-docker-image:
           app-name: g1-todo-app-server-staging
+          path: ./backend
 
 # Orchestrate or schedule a set of jobs
 workflows:
