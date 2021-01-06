@@ -83,6 +83,57 @@ aliases:
         ]
       }
 
+commands:
+  push-docker-image:
+    description: Push a Docker image to the Heroku Docker registry.
+    parameters:
+      api-key:
+        default: HEROKU_API_KEY
+        type: env_var_name
+      app-name:
+        default: $HEROKU_APP_NAME
+        type: string
+      no_output_timeout:
+        default: 10m
+        type: string
+      process-types:
+        default: web
+        type: string
+      recursive:
+        default: false
+        type: boolean
+    steps:
+      - run:
+          command: heroku container:login
+      - run:
+          command: |
+            heroku container:push -a <<parameters.app-name>> <<# parameters.recursive>>--recursive<</parameters.recursive>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+          no_output_timeout: << parameters.no_output_timeout >>
+          name: Push Docker image to Heroku
+  release-docker-image:
+    description: Release a Docker image from the Heroku Docker registry.
+    parameters:
+      api-key:
+        default: HEROKU_API_KEY
+        type: env_var_name
+      app-name:
+        default: $HEROKU_APP_NAME
+        type: string
+      no_output_timeout:
+        default: 10m
+        type: string
+      process-types:
+        default: web
+        type: string
+    steps:
+      - run:
+          command: heroku container:login
+      - run:
+          command: |
+            heroku container:release -a <<parameters.app-name>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+          no_output_timeout: << parameters.no_output_timeout >>
+          name: Release Docker image to Heroku
+
 executors:
   default-executor:
     docker:
@@ -160,9 +211,8 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - run: cd ./backend
-      - heroku/push-docker-image:
+      - push-docker-image:
           app-name: g1-todo-app-server-staging
-          process-types: web
 
   deploy-server-staging:
     executor: heroku/default
@@ -172,9 +222,8 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - run: cd ./backend
-      - heroku/release-docker-image:
+      - release-docker-image:
           app-name: g1-todo-app-server-staging
-          process-types: web
 
 # Orchestrate or schedule a set of jobs
 workflows:
