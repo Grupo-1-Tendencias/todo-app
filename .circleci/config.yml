@@ -239,7 +239,7 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - push-docker-image:
-          app-name: g1-todo-app-client-staging
+          app-name: g1-todo-app-staging
           path: ./client
 
   deploy-client-staging:
@@ -250,7 +250,7 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - release-docker-image:
-          app-name: g1-todo-app-client-staging
+          app-name: g1-todo-app-staging
           path: ./client
 
 # Orchestrate or schedule a set of jobs
