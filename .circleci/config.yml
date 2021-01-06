@@ -3,6 +3,7 @@ version: 2.1
 # Use a package of configuration called an orb.
 orbs:
   slack: circleci/slack@4.2.0
+  heroku: circleci/heroku@1.2.3
 
 aliases:
   - &restore-yarn-cache
@@ -19,10 +20,10 @@ aliases:
 
   - &install-yarn sudo npm install --global --force yarn@1.22.4
 
-  - &filter-master-only
+  - &filter-main-only
     branches:
       only:
-        - master
+        - main
 
   - &slack-success-notification
     event: pass
@@ -151,11 +152,27 @@ jobs:
       - slack/notify: *slack-fail-notification
       - slack/notify: *slack-success-notification
 
+  push-server-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run: cd ./backend
+      - heroku/push-docker-image:
+          app-name: g1-todo-app-server-staging
+
+  deploy-server-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run: cd ./backend
+      - heroku/release-docker-image:
+          app-name: g1-todo-app-server-staging
+
 # Orchestrate or schedule a set of jobs
 workflows:
-  # Name the workflow "welcome"
   todo-app:
-    # Run the welcome/run job in its own container
     jobs:
       - checkout-code
       - check-format:
@@ -169,3 +186,9 @@ workflows:
       - run-app-tests:
           requires: [build]
           context: slack-secrets
+      - push-server-staging:
+          requires: [build, run-app-tests]
+          # add not master/main branch filter
+      - deploy-server-staging:
+          requires: [push-server-staging]
+          # add not master/main branch filter
