@@ -157,6 +157,8 @@ jobs:
     steps:
       - checkout
       - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
       - run: cd ./backend
       - heroku/push-docker-image:
           app-name: g1-todo-app-server-staging
@@ -166,6 +168,8 @@ jobs:
     steps:
       - checkout
       - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
       - run: cd ./backend
       - heroku/release-docker-image:
           app-name: g1-todo-app-server-staging
