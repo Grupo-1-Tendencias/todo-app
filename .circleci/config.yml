@@ -218,6 +218,7 @@ jobs:
       - heroku/install
       - setup_remote_docker:
           version: 19.03.13
+      - attach_workspace: { at: "." }
       - push-docker-image:
           app-name: g1-todo-app-server-staging
           path: ./backend
@@ -229,6 +230,7 @@ jobs:
       - heroku/install
       - setup_remote_docker:
           version: 19.03.13
+      - attach_workspace: { at: "." }
       - release-docker-image:
           app-name: g1-todo-app-server-staging
           path: ./backend
