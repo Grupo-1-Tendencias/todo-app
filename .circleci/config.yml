@@ -231,6 +231,28 @@ jobs:
           app-name: g1-todo-app-server-staging
           path: ./backend
 
+  push-client-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - push-docker-image:
+          app-name: g1-todo-app-client-staging
+          path: ./client
+
+  deploy-client-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - release-docker-image:
+          app-name: g1-todo-app-client-staging
+          path: ./client
+
 # Orchestrate or schedule a set of jobs
 workflows:
   todo-app:
@@ -252,4 +274,10 @@ workflows:
           # add not master/main branch filter
       - deploy-server-staging:
           requires: [push-server-staging]
+          # add not master/main branch filter
+      - push-client-staging:
+          requires: [build, run-app-tests]
+          # add not master/main branch filter
+      - deploy-client-staging:
+          requires: [push-client-staging]
           # add not master/main branch filter
