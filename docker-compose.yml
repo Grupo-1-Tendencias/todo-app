@@ -12,4 +12,18 @@ services:
     ports:
       - 5000:5000
     working_dir: /usr/src/app/backend
-    restart: always
+    volumes:
+      - ./backend:/usr/src/app/backend:cached
+      - /usr/src/app/backend/node_modules
+  frontend-dev:
+    image: frontend-dev
+    container_name: frontend-dev
+    build:
+      context: client
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - 3000:3000
+    working_dir: /usr/src/app/client
+    volumes:
+      - ./client:/usr/src/app/client:cached
+      - /usr/src/app/client/node_modules
