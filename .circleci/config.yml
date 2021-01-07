@@ -39,7 +39,7 @@ aliases:
             }
           },
           {
-            "type": "sections",
+            "type": "actions",
             "elements": [
               {
                 "type": "button",
