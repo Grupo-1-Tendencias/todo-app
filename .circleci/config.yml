@@ -35,7 +35,7 @@ aliases:
             "type": "section",
             "text": {
               "type": "mrkdwn",
-              "text": "✅ *Success* Job ${CIRCLE_JOB}#${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+              "text": "✅ *Success* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
             }
           },
           {
@@ -64,7 +64,7 @@ aliases:
             "type": "section",
             "text": {
               "type": "mrkdwn",
-              "text": "❌ *Failure* Job ${CIRCLE_JOB}#${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+              "text": "❌ *Failure* #${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
             }
           },
           {
