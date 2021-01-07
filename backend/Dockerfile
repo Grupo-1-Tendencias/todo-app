@@ -1,5 +1,6 @@
 FROM node:14-alpine as builder
 ENV NODE_ENV=development
+ENV PATH /usr/src/app/backend/node_modules/.bin:$PATH
 
 WORKDIR /usr/src/app/backend
 COPY ["package.json", "yarn.lock", "./"]
@@ -20,6 +21,6 @@ ENV SWAGGER_API_SPEC=/api/spec
 
 WORKDIR /usr/src/app/backend
 COPY --from=builder /usr/src/app/backend /usr/src/app/backend
-RUN yarn install --silent --production
+RUN rm -rf node_modules && yarn install --frozen-lockfile --silent --production
 EXPOSE 5000
 CMD [ "yarn", "start"]
