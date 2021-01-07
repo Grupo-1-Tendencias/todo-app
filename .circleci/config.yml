@@ -276,13 +276,17 @@ workflows:
           context: slack-secrets
       - push-server-staging:
           requires: [run-app-tests]
+          context: slack-secrets
           # add not master/main branch filter
       - deploy-server-staging:
           requires: [push-server-staging]
+          context: slack-secrets
           # add not master/main branch filter
       - push-client-staging:
           requires: [run-app-tests]
+          context: slack-secrets
           # add not master/main branch filter
       - deploy-client-staging:
           requires: [push-client-staging]
+          context: slack-secrets
           # add not master/main branch filter
