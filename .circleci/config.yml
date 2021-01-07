@@ -183,7 +183,6 @@ jobs:
       - attach_workspace: { at: "." }
       - run: yarn build
       - slack/notify: *slack-fail-notification
-      - slack/notify: *slack-success-notification
 
   lint:
     executor: default-executor
@@ -195,7 +194,6 @@ jobs:
       - attach_workspace: { at: "." }
       - run: yarn lint
       - slack/notify: *slack-fail-notification
-      - slack/notify: *slack-success-notification
 
   run-app-tests:
     executor: default-executor
@@ -207,7 +205,6 @@ jobs:
       - attach_workspace: { at: "." }
       - run: CI=true yarn test
       - slack/notify: *slack-fail-notification
-      - slack/notify: *slack-success-notification
 
   push-server-staging:
     executor: heroku/default
@@ -219,6 +216,8 @@ jobs:
       - push-docker-image:
           app-name: g1-todo-app-server-staging
           path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
   deploy-server-staging:
     executor: heroku/default
@@ -230,6 +229,8 @@ jobs:
       - release-docker-image:
           app-name: g1-todo-app-server-staging
           path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
   push-client-staging:
     executor: heroku/default
@@ -241,6 +242,8 @@ jobs:
       - push-docker-image:
           app-name: g1-todo-app-staging
           path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
   deploy-client-staging:
     executor: heroku/default
@@ -252,6 +255,8 @@ jobs:
       - release-docker-image:
           app-name: g1-todo-app-staging
           path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
 
 # Orchestrate or schedule a set of jobs
 workflows:
