@@ -16,11 +16,18 @@ Docker enables project collaborators to install and run the project without dire
 
 Once you have Docker installed on your computer, open a terminal session on the project directory and follow the instructions below. If you're on Windows, please read [this note](#important-note-for-docker-on-windows) on how to correctly run Docker on this OS.
 
-## Start the development container
+## Services URL
 
-The development container enables the collaborators to develop the app with hot reloading of both the backend and the client, so whenever you make a change to either of them the container will automatically reload and integrate the new changes, without having to manually restart the container every time.
+| Service  | Local URL             | Staging URL                                      | Production URL                           |
+| -------- | --------------------- | ------------------------------------------------ | ---------------------------------------- |
+| Backend  | http://localhost:5000 | https://g1-todo-app-server-staging.herokuapp.com | https://g1-todo-app-server.herokuapp.com |
+| Frontend | http://localhost:3000 | https://g1-todo-app-staging.herokuapp.com        | https://g1-todo-app.herokuapp.com        |
 
-To start the dev container:
+## Start the development containers
+
+The development containers enable the collaborators to develop the app with hot reloading of both the backend and the client, so whenever you make a change to either of them, the matching container will automatically reload and integrate the new changes, without having to manually restart that container every time.
+
+To start the dev containers:
 
 Open the project directory on the terminal (if you're on Windows follow the steps below instead):
 
@@ -43,7 +50,7 @@ git clone <GITHUB_REPO_URL>
 cd ~/<PROJECT_PATH>/todo-app
 ```
 
-After opening the project on the terminal, run the development container using `docker-compose`:
+After opening the project on the terminal, run the development containers using `docker-compose`:
 
 ```bash
 docker-compose up -d
@@ -56,3 +63,31 @@ If you want to stop the servers just run:
 ```bash
 docker-compose down
 ```
+
+## Start the production containers
+
+The production containers are useful when you want to see how the app will run in the exact same environment as the production server without having to wait for them to be deployed first. It doesn't have hot reloading tho.
+
+To start the production containers run this in your terminal:
+
+```bash
+docker-compose -f ./docker-compose.prod.yml up -d
+```
+
+To stop the containers:
+
+```bash
+docker-compose down
+```
+
+## Removing unused containers & images
+
+From time to time it's best to remove any container or image that's no longer being used and is still occupying space on your machine storage. To do this, run the following commands:
+
+```bash
+# Be sure to run this inside the project directory
+docker-compose down --remove-orphans --rmi all
+docker image prune -af
+```
+
+The first command first stop any running containers and then remove any containers that are not being used as well as their images. The second one is removing any images that have might been still left.
