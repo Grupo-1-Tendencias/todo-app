@@ -1,5 +1,4 @@
 import ExamplesService from "../../services/examples.service";
-import ToDoService from "../../services/todos.service";
 
 export class Controller {
   all(req, res) {
