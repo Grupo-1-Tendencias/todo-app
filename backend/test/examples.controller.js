@@ -4,6 +4,7 @@ import Server from "../server";
 
 const expect = chai.expect;
 
+
 describe("Examples", () => {
   it("should get all examples", () =>
     request(Server)
@@ -12,7 +13,7 @@ describe("Examples", () => {
       .then((r) => {
         expect(r.body).to.be.an.an("array").of.length(2);
       }));
-
+  
   it("should add a new example", () =>
     request(Server)
       .post("/api/examples")
@@ -35,4 +36,7 @@ describe("Examples", () => {
           .that.has.property("name")
           .equal("test");
       }));
+      
 });
+
+
