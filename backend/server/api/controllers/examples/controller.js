@@ -1,9 +1,7 @@
 import ExamplesService from "../../services/examples.service";
 import ToDoService from "../../services/todos.service";
 
-
 export class Controller {
-  
   all(req, res) {
     ExamplesService.all().then((r) => res.json(r));
   }
@@ -20,6 +18,5 @@ export class Controller {
       res.status(201).location(`/api/examples/${r.id}`).json(r)
     );
   }
-  
 }
 export default new Controller();
