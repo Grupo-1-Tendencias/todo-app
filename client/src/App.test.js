@@ -4,7 +4,7 @@ import App from "./App";
 test("renders header and body", () => {
   render(<App />);
   const header = screen.getByText(/To Do/i);
-  const body = screen.getByRole("body");
+  const body = screen.getByTestId("body");
 
   expect(header).toBeInTheDocument();
   expect(body).toBeInTheDocument();
