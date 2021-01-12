@@ -1,15 +1,16 @@
-html, body{
+html,
+body {
   height: 100%;
   width: 100%;
 }
 
-#root{
+#root {
   height: 100%;
   width: 100%;
   display: flex;
 }
 
-:root{
+:root {
   --primary: rgba(155, 89, 182, 1);
   --primary-light: rgba(155, 89, 182, 0.37);
   --secondary: rgba(149, 165, 166, 1);

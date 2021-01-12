@@ -8,8 +8,8 @@
   grid-gap: 15px;
 }
 
-@media only screen and (max-width: 620px){
-  .App{
+@media only screen and (max-width: 620px) {
+  .App {
     width: 90%;
     min-height: 30%;
     max-height: 60%;
@@ -28,7 +28,7 @@
   box-shadow: 0px 3px 5px 0px #0000002e;
 }
 
-.App-body{
+.App-body {
   background-color: white;
   border-radius: 0px 0px 30px 30px;
   padding: 15px;
