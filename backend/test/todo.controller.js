@@ -5,5 +5,5 @@ import Server from "../server";
 const expect = chai.expect;
 
 console.log(
-  `This is temporal: ${chai.version} ${request.name} ${Server} ${expect.name}`
+  `This is temporal, please ignore: ${chai.version} ${request.name} ${Server} ${expect.name}`
 );
