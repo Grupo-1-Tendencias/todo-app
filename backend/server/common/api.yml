@@ -27,7 +27,7 @@ definitions:
         example: no_stress
 
 paths:
-  /examples:
+  /todo:
     get:
       tags:
         - Examples
