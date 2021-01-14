@@ -21,3 +21,27 @@ describe("Stub test for controller and server", () => {
           .equal("test");
       }));
 });
+
+describe("test cases for create controller method", () => {
+  it("should add a new todo when body has all properties", () => {
+    const todo = {
+      name: "French homework",
+      description: "Pages 23 and 24 exercises 1-9",
+      isDone: false,
+      dueDate: "20-04-2021",
+    };
+    chai
+      .request(Server)
+      .post("/api/todo")
+      .send(todo)
+      .end((err, res, done) => {
+        res.should.have.status(201);
+        res.body.should.be.a("object");
+        res.body.book.should.have.property("name");
+        res.body.book.should.have.property("description");
+        res.body.book.should.have.property("isDone");
+        res.body.book.should.have.property("dueDate");
+        done();
+      });
+  });
+});
