@@ -1,8 +1,13 @@
 const db = require("../../services/todos.service");
 
 export class Controller {
+  stub(req, res) {
+    console.log(`Temporal... ${db}...`);
+    return res.json(req.body);
+  }
   create(req, res) {
-    return `Temporal ${req} ${res} ${db}`; //This is only a placeholder for passing es lint tests
+    console.log(`Temporal...${req} ${res}...`);
+    return true;
   }
 }
 

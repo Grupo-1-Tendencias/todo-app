@@ -75,6 +75,22 @@ paths:
         404:
           description: To Do not found
 
+  /todo/stub:
+    post:
+      tags:
+        - To Do
+      description: This is only for testing
+      parameters:
+        - name: body
+          in: body
+          description: This is only for testing
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        201:
+          description: To Do entry created succesfully
+
   /spec:
     get:
       tags:
