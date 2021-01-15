@@ -69,4 +69,22 @@ describe("test cases for create controller method", () => {
 					.equal("");
 			});
 	});
+
+	it("should send dueDate as an empty string when attempting to add new todo with missing dueDate property", () => {
+		const todo = {
+			name: "Do french homework",
+			description: "Do exercises in pages 24 and 25",
+			isDone: false,
+		};
+		return request(Server)
+			.post("/api/todo")
+			.send(todo)
+			.then((r) => {
+				expect(r.statusCode).to.equal(201);
+				expect(r.body)
+					.to.be.an.an("object")
+					.that.has.property("dueDate")
+					.equal("");
+			});
+	});
 });
