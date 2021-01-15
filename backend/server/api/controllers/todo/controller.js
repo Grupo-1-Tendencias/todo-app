@@ -12,7 +12,12 @@ export class Controller {
 			isDone: req.body.isDone,
 			dueDate: req.body.dueDate,
 		};
-		res.status(201).send();
+		if (todo.name == false) {
+			//If required properties are falsy
+			res.status(400).send();
+		} else {
+			res.status(201).send();
+		}
 	}
 }
 

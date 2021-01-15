@@ -38,10 +38,11 @@ describe("test cases for create controller method", () => {
 			});
 	});
 
-	it("should send bad request when attempt to add new todo missing required properties", () => {
+	it("should send bad request when attempt to add new todo is missing name property", () => {
 		const todo = {
 			description: "Pages 23 and 24 exercises 1-9",
 			dueDate: "20-04-2021",
+			isDone: true,
 		};
 		return request(Server)
 			.post("/api/todo")
