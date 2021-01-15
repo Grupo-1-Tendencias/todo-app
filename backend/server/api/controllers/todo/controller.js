@@ -8,7 +8,7 @@ export class Controller {
 		const todo = {
 			name: req.body.name,
 			description: req.body.description || "",
-			isDone: req.body.isDone || false,
+			isDone: req.body.isDone,
 			dueDate: req.body.dueDate || "",
 		};
 		if (todo.name == undefined) {
