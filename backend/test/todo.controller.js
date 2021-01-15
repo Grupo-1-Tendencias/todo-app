@@ -105,4 +105,14 @@ describe("test cases for create controller method", () => {
           .equal(false);
       });
   });
+
+  it("should send bad request status code when receives an empty body", () => {
+    const todo = {};
+    return request(Server)
+      .post("/api/todo")
+      .send(todo)
+      .then((r) => {
+        expect(r.statusCode).to.equal(400);
+      });
+  });
 });
