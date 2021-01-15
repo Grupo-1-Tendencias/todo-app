@@ -30,18 +30,13 @@ describe("test cases for create controller method", () => {
       isDone: false,
       dueDate: "20-04-2021",
     };
-    chai
-      .request(Server)
+    return request(Server)
       .post("/api/todo")
       .send(todo)
-      .end((err, res, done) => {
-        res.should.have.status(201);
-        res.body.should.be.a("object");
-        res.body.book.should.have.property("name");
-        res.body.book.should.have.property("description");
-        res.body.book.should.have.property("isDone");
-        res.body.book.should.have.property("dueDate");
-        done();
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(201);
+        expect(r.body).to.have.a.property("message");
       });
   });
 });

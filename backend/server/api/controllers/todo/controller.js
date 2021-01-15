@@ -6,8 +6,15 @@ export class Controller {
     return res.json(req.body);
   }
   create(req, res) {
-    console.log(`Temporal...${req} ${res}...`);
-    return true;
+    const todo = {
+      name: req.body.name,
+      description: req.body.description,
+      isDone: req.body.isDone,
+      dueDate: req.body.dueDate,
+    };
+    res
+      .status(201)
+      .send({ message: `Todo: "${todo.name} added to data base succesfully"` });
   }
 }
 
