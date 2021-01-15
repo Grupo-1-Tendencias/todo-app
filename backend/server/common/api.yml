@@ -58,6 +58,10 @@ paths:
       responses:
         201:
           description: To Do entry created succesfully
+        400:
+          description: Invalid input. Please note that To Do name is required.
+        500:
+          description: Internal data base error. There were difficulties trying to append the new To Do to our database,
 
   /todo/{id}:
     get:
