@@ -37,4 +37,17 @@ describe("test cases for create controller method", () => {
 				expect(r.statusCode).to.equal(201);
 			});
 	});
+
+	it("should send bad request when attempt to add new todo missing required properties", () => {
+		const todo = {
+			description: "Pages 23 and 24 exercises 1-9",
+			dueDate: "20-04-2021",
+		};
+		return request(Server)
+			.post("/api/todo")
+			.send(todo)
+			.then((r) => {
+				expect(r.statusCode).to.equal(400);
+			});
+	});
 });
