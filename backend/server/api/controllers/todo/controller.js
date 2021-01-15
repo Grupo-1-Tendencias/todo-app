@@ -2,13 +2,12 @@ import ToDoService from "../../services/todos.service";
 
 export class Controller {
 	stub(req, res) {
-		//	console.log(`Temporal... ${db}...`);
 		return res.json(req.body);
 	}
 	create(req, res) {
 		const todo = {
 			name: req.body.name,
-			description: req.body.description,
+			description: req.body.description || "",
 			isDone: false,
 			dueDate: req.body.dueDate,
 		};
@@ -17,7 +16,7 @@ export class Controller {
 		} else {
 			try {
 				ToDoService.db.ref("todo").push(todo);
-				res.status(201).send();
+				res.status(201).json(todo).send();
 			} catch (error) {
 				res.status(500).send();
 			}
