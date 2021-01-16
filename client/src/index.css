@@ -1,4 +1,19 @@
+html,
 body {
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --primary: rgba(155, 89, 182, 1);
+  --primary-light: rgba(155, 89, 182, 0.37);
+  --secondary: rgba(149, 165, 166, 1);
+  --danger: rgba(231, 76, 60, 1);
+  --info: rgba(52, 152, 219, 1);
+}
+
+body {
+  background-color: var(--primary-light);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",

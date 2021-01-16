@@ -1,12 +1,12 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: backend
-  description: Todo app backend
+  title: To Do API
+  description: To Do Backend Endpoints
 basePath: /api
 tags:
-  - name: Examples
-    description: Simple example endpoints
+  - name: To Do
+    description: App Endpoints
   - name: Specification
     description: The swagger API specification
 
@@ -24,47 +24,76 @@ definitions:
     properties:
       name:
         type: string
-        example: no_stress
+        example: Math Homework
+      description:
+        type: string
+        example: Do all exercises in page 98
+      isDone:
+        type: boolean
+        example: false
+      dueDate:
+        type: string
+        example: 31-03-2021
 
 paths:
-  /examples:
+  /todo:
     get:
       tags:
-        - Examples
-      description: Fetch all examples
+        - To Do
+      description: Fetch all To Do entries
       responses:
         200:
-          description: Returns all examples
+          description: Returns all To Do
     post:
       tags:
-        - Examples
-      description: Create a new example
+        - To Do
+      description: Create a new To Do entry
       parameters:
-        - name: example
+        - name: body
           in: body
-          description: an example
+          description: To Do object that needs to be added to database
           required: true
           schema:
             $ref: "#/definitions/ExampleBody"
       responses:
-        200:
-          description: Returns all examples
+        201:
+          description: To Do entry created succesfully
+        400:
+          description: Invalid input. Please note that To Do name is required.
+        500:
+          description: Internal data base error. There were difficulties trying to append the new To Do to our database,
 
-  /examples/{id}:
+  /todo/{id}:
     get:
       tags:
-        - Examples
+        - To Do
       parameters:
         - name: id
           in: path
           required: true
-          description: The id of the example to retrieve
+          description: The id of the To Do to retrieve
           type: integer
       responses:
         200:
-          description: Return the example with the specified id
+          description: Return the To Do with the specified id
         404:
-          description: Example not found
+          description: To Do not found
+
+  /todo/stub:
+    post:
+      tags:
+        - To Do
+      description: This is only for testing
+      parameters:
+        - name: body
+          in: body
+          description: This is only for testing
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        201:
+          description: To Do entry created succesfully
 
   /spec:
     get:

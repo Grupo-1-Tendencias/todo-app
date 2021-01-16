@@ -1,4 +1,4 @@
-import chai from "chai";
+/*import chai from "chai";
 import request from "supertest";
 import Server from "../server";
 
@@ -35,4 +35,4 @@ describe("Examples", () => {
           .that.has.property("name")
           .equal("test");
       }));
-});
+});*/
