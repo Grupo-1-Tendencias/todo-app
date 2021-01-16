@@ -22,6 +22,15 @@ export class Controller {
       }
     }
   }
+
+  all (req, res) {
+    res.status(200).json(ToDoService.all()).send();
+  }
+
+  byId(req, res) {
+    if (req.params.id) res.status(200).json(req.params.id).send();
+    else res.status(404).send();
+  }
 }
 
 export default new Controller();

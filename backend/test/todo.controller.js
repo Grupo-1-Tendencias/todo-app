@@ -116,3 +116,78 @@ describe("test cases for create controller method", () => {
       });
   });
 });
+
+describe("test cases for get controller method", () => {
+  it("should get an array with all the todos", () => {
+    return request(Server)
+      .get("/api/todo")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body).to.be.an("array");
+      });
+  });
+
+  it("should send bad request status code when it receives an id that doesn't exist", () => {
+    return request(Server)
+      .get("/api/todo/1000251")
+      .then((r) => {
+        expect(r.statusCode).to.equal(404);
+      });
+  });
+
+  it("should return a todo object", () => {
+    return request(Server)
+      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("description")
+          .equal("Do all exercises in page 98");
+      });
+  });
+
+  it("should return a todo object", () => {
+    return request(Server)
+      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("dueDate")
+          .equal("31-03-2021");
+      });
+  });
+
+  it("should return a todo object", () => {
+    return request(Server)
+      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("isDone")
+          .equal(false);
+      });
+  });
+
+  it("should return a todo object", () => {
+    return request(Server)
+      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("name")
+          .equal("Math Homework");
+      });
+  });
+
+
+
+});
