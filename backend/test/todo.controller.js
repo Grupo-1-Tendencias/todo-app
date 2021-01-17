@@ -132,4 +132,13 @@ describe("test cases for delete controller method", () => {
           });
       });
   });
+
+  it("should give a 404 if the todo does not exist", () => {
+    var a = "UnexistingKey";
+    return request(Server)
+      .delete("/api/todo/delete/" + a)
+      .then((f) => {
+        expect(f.statusCode).to.equal(404);
+      });
+  });
 });
