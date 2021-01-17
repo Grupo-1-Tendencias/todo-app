@@ -187,6 +187,7 @@ describe("test cases for delete controller method", () => {
     };
     return request(Server)
       .get("/api/todo")
+      .send(todo)
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
