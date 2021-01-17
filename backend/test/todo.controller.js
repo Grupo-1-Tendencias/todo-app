@@ -176,6 +176,27 @@ describe("test cases for get controller method", () => {
       });
   });
 
+  it("should get an array with all the todos and confirm that the elements have a key property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("key")
+          .equal("-MRBI_Ad4mDVvuDt3dQP");
+      });
+  });
+
+  it("should give a 404 error when passed a key that doesn't exist", () => {
+    return request(Server)
+      .get("/api/todo/-fdsf")
+      .then((r) => {
+        expect(r.statusCode).to.equal(404);
+      });
+  });
+
   describe("test cases for delete controller method", () => {
     it("should delete an existing todo given its key", () => {
       const todo = {
