@@ -47,7 +47,7 @@ export class Controller {
             dueDate: req.params.dueDate
         };
         // If the request body is empty, the name property will be undefined
-        // If all the searching filters are false, there is nothing to find, so return bad request
+        // If name is empty, there is nothing to find, so return bad request
         if (searchTodo.name == undefined || searchTodo.name === '') res.status(400).send();
         else {
             const result = await ToDoService.search(searchTodo.name);
