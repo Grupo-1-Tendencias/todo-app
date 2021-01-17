@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Layout from "./Layout";
+import Layout from "./index";
 
 test("renders header and body", () => {
   render(<Layout title="To Do" />);
