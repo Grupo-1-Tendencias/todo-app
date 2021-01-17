@@ -18,18 +18,10 @@ export class ToDoService {
         return {...newTodo, key: newTodoRef.key };
     }
 
-    async search(searchTodo) {
+    async search(todoName) {
         let matchTodos = [];
-        await this.db.ref("todo").once("value", function(snapshot) {
-            const todos = snapshot.val();
-            for (const property in todos) {
-                let todo = todos[property];
-                //If the respective filter is used and the fields match, then add that todo to the match array
-                if (searchTodo.useName && searchTodo.name === todo.name) matchTodos.push(todo);
-                else if (searchTodo.useDescription && searchTodo.description === todo.description) matchTodos.push(todo);
-                else if (searchTodo.useIsDone && searchTodo.isDone === todo.isDone) matchTodos.push(todo);
-                else if (searchTodo.useDueDate && searchTodo.dueDate === todo.dueDate) matchTodos.push(todo);
-            }
+        await this.db.ref("todo").orderByChild("name").equalTo(todoName).once("value", function(snapshot) {
+            matchTodos = Object.values(snapshot.val());
             return matchTodos;
         }, function(errorObject) {
             console.log("The read failed: " + errorObject.code);

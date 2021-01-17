@@ -25,10 +25,6 @@ export class Controller {
 
     async search(req, res) {
         const searchTodo = {
-            useName: req.body.useName,
-            useDescription: req.body.useDescription,
-            useIsDone: req.body.useIsDone,
-            useDueDate: req.body.useDueDate,
             name: req.body.name,
             description: req.body.description,
             isDone: req.body.isDone,
@@ -36,13 +32,9 @@ export class Controller {
         };
         // If the request body is empty, the name property will be undefined
         // If all the searching filters are false, there is nothing to find, so return bad request
-        if (searchTodo.name == undefined ||
-            (!searchTodo.useName &&
-                !searchTodo.useDescription &&
-                !searchTodo.useIsDone &&
-                !searchTodo.useDueDate)) res.status(400).send();
+        if (searchTodo.name == undefined || searchTodo.name === '') res.status(400).send();
         else {
-            const result = await ToDoService.search(searchTodo);
+            const result = await ToDoService.search(searchTodo.name);
             // -1 is the returned value when the connection to the db fails
             if (result != -1) res.status(200).json(result).send();
             else res.status(500).send();
