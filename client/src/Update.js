@@ -55,7 +55,7 @@ handleIdChange = (event) => {
                         <input value={this.state.Title} onChange={this.handleTitleChange} className="form-control" placeholder="Enter Title" />
                     </div>
                     <div className="form-group" >
-                        <input value={this.state.Title} onChange={this.handleDescriptionChange} className="form-control" placeholder="Enter Endter Description" />
+                        <input value={this.state.Description} onChange={this.handleDescriptionChange} className="form-control" placeholder="Enter Endter Description" />
                     </div>
                     <div className="form-group">
                         <select value={this.state.Status} onChange={this.handleStatusChange} className="form-control" >
