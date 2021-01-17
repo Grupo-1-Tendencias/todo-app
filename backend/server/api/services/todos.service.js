@@ -1,5 +1,3 @@
-import { json } from "body-parser";
-
 const admin = require("firebase-admin");
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
@@ -31,11 +29,8 @@ export class ToDoService {
   }
 
   async byId(id) {
-    const todo = await this.db
-      .ref("todo/" + id)
-      .once("value")
-      .val();
-    return todo;
+    const todo = await this.db.ref("todo/" + id).once("value");
+    return todo.val();
   }
 
   async deleteByID(key) {
