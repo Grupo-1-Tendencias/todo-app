@@ -111,11 +111,10 @@ describe("test cases for create controller method", () => {
         expect(r.statusCode).to.equal(400);
       });
   });
-});
 
-describe("test cases for update controller method", () => {
-  it("Should request user data in json file",  () => {
-    /*
+  describe("test cases for update controller method", () => {
+    it("Should request user data in json file", () => {
+      /*
     function allTodos() {
       return [
           {id: 1, name: "alberto", isDone : false, dueDate : 20/1/2022},
@@ -123,8 +122,8 @@ describe("test cases for update controller method", () => {
           {id: 3, name: "diego", isDone : false, dueDate : 20/1/2022},
       ];
       }*/
-    //return request(Server).post("/api/todo/update/1").send(allTodos());
-    /*
+      //return request(Server).post("/api/todo/update/1").send(allTodos());
+      /*
     return request(Server).get("/api/todo/1").then((r) => expect("Content-Type", /json/)
     .then((r) => {
       expect(r.body)
@@ -133,11 +132,41 @@ describe("test cases for update controller method", () => {
         .equal("alberto");
     })); 
     */
-    return request(Server)
-   .get("/api/todo/1")
-   .then((r) => {
-     expect(r.statusCode).to.equal(201);
-   });
+      return request(Server)
+        .get("/api/todo/1")
+        .then((r) => {
+          expect(r.statusCode).to.equal(201);
+        });
+    });
+  });
 
+  describe("test cases for delete controller method", () => {
+    it("should delete an existing todo given its key", () => {
+      const todo = {
+        name: "Testing delete",
+        description: "Pages 23 and 24 exercises 1-9",
+        isDone: false,
+        dueDate: "20-04-2021",
+      };
+      return request(Server)
+        .post("/api/todo")
+        .send(todo)
+        .then((r) => {
+          return request(Server)
+            .delete("/api/todo/delete/" + r.body.key)
+            .then((x) => {
+              expect(x.statusCode).to.equal(200);
+            });
+        });
+    });
+
+    it("should give a 404 if the todo does not exist", () => {
+      var a = "UnexistingKey";
+      return request(Server)
+        .delete("/api/todo/delete/" + a)
+        .then((f) => {
+          expect(f.statusCode).to.equal(404);
+        });
+    });
   });
-  });
+});
