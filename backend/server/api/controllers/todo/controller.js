@@ -12,7 +12,7 @@ export class Controller {
       dueDate: req.body.dueDate || "",
     };
     if (todo.name == undefined) {
-      res.status(400).send();
+      res.status(400).end();
     } else {
       try {
         const newTodo = await ToDoService.create(todo);
@@ -22,6 +22,18 @@ export class Controller {
         console.log(error);
       }
     }
+  }
+
+  async all(req, res) {
+    res.status(200).json(await ToDoService.all());
+  }
+
+  async byId(req, res) {
+    if (req.params.id) {
+      const result = await ToDoService.byId(req.params.id);
+      if (result) res.status(200).json(result);
+      else res.status(404).end();
+    } else res.status(404).end();
   }
 
   async deleteByID(req, res) {
