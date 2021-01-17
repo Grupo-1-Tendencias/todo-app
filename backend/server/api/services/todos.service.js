@@ -28,7 +28,7 @@ export class ToDoService {
     const todo = await this.db.ref("todo/" + id).once("value");
     return todo;
   }
-  
+
   async deleteByID(key) {
     const ref = await this.db.ref("todo/" + key);
     const todo = await ref.once("value");

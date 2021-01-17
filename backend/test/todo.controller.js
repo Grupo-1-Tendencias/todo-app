@@ -175,7 +175,7 @@ describe("test cases for get controller method", () => {
           .equal("Math Homework");
       });
   });
-  
+
   describe("test cases for delete controller method", () => {
     it("should delete an existing todo given its key", () => {
       const todo = {
