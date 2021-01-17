@@ -162,6 +162,30 @@ describe("Todo app test suite", () => {
                 .then((r) => {
                     expect(r.statusCode).to.equal(200);
                 })
-        })
+        });
+
+        it("should return all the todos that matched", () => {
+            const searchTodo = {
+                useName: true,
+                useDescription: false,
+                useIsDone: false,
+                useDueDate: false,
+                name: 'Do french homework',
+                description: '',
+                isDone: false,
+                dueDate: ''
+            };
+            return request(Server)
+                .post("/api/todo/search")
+                .send(searchTodo)
+                .then((r) => {
+                    for (const todo of r.body) {
+                        expect(todo)
+                            .to.be.an.an("object")
+                            .that.has.property("name")
+                            .equal(searchTodo.name);
+                    }
+                });
+        });
     });
 });

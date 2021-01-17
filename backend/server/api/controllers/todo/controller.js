@@ -42,7 +42,9 @@ export class Controller {
                 !searchTodo.useIsDone &&
                 !searchTodo.useDueDate)) res.status(400).send();
         else {
-            res.status(200).send();
+            const result = await ToDoService.search(searchTodo);
+            if (result != -1) res.status(200).json(result).send();
+            else res.status(500).send();
         }
     }
 }
