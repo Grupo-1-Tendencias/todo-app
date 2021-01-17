@@ -124,21 +124,21 @@ describe("test cases for get controller method", () => {
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
-        expect(r.body).to.be.an("array");
-      });
+        expect(r.body).to.be.an("object");
+      })
   });
 
   it("should send bad request status code when it receives an id that doesn't exist", () => {
     return request(Server)
-      .get("/api/todo/1000251")
+      .get("/api/todo/dfsdfhskjfg")
       .then((r) => {
         expect(r.statusCode).to.equal(404);
       });
   });
 
-  it("should return a todo object", () => {
+  it("should return a todo object that has a description property", () => {
     return request(Server)
-      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
@@ -149,9 +149,9 @@ describe("test cases for get controller method", () => {
       });
   });
 
-  it("should return a todo object", () => {
+  it("should return a todo object that has a dueDate property", () => {
     return request(Server)
-      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
@@ -162,9 +162,9 @@ describe("test cases for get controller method", () => {
       });
   });
 
-  it("should return a todo object", () => {
+  it("should return a todo object that has a isDone property", () => {
     return request(Server)
-      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
@@ -172,12 +172,12 @@ describe("test cases for get controller method", () => {
           .to.be.an("object")
           .that.has.property("isDone")
           .equal(false);
-      });
+      })
   });
 
-  it("should return a todo object", () => {
+  it("should return a todo object that has a name property", () => {
     return request(Server)
-      .get("/api/todo/MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);

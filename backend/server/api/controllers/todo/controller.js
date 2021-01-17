@@ -23,12 +23,18 @@ export class Controller {
     }
   }
 
-  all (req, res) {
-    res.status(200).json(ToDoService.all()).send();
+  async all (req, res) {
+    res.status(200).json(await ToDoService.all()).send();
   }
 
-  byId(req, res) {
-    if (req.params.id) res.status(200).json(req.params.id).send();
+  async byId(req, res) {
+    if (req.params.id) {
+      const result = await ToDoService.byId(req.params.id);
+      if (result !== "null")
+        res.status(200).json(result).send();
+      else
+        res.status(404).send();
+    }
     else res.status(404).send();
   }
 }
