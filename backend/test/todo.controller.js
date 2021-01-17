@@ -114,13 +114,13 @@ describe("test cases for create controller method", () => {
 });
 
 describe("test cases for get controller method", () => {
-  it("should get an object with all the todos", () => {
+  it("should get an array with all the todos", () => {
     return request(Server)
       .get("/api/todo")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
-        expect(r.body).to.be.an("object");
+        expect(r.body).to.be.an("array");
       });
   });
 
@@ -144,7 +144,7 @@ describe("test cases for get controller method", () => {
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
-          .to.be.an("array")
+          .to.be.an("object")
           .that.has.property("dueDate")
           .equal("31-03-2021");
       });
