@@ -31,8 +31,11 @@ export class ToDoService {
   }
 
   async byId(id) {
-    const todo = await this.db.ref("todo/" + id).once("value");
-    return JSON.parse(todo);
+    const todo = await this.db
+      .ref("todo/" + id)
+      .once("value")
+      .val();
+    return todo;
   }
 
   async deleteByID(key) {
