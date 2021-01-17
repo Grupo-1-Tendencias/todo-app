@@ -108,7 +108,7 @@ paths:
           description: Return the API specification
   
   /todo/update/{id}:
-    post:
+    put:
       tags:
         - To Do
       description: This is for update users
@@ -118,6 +118,12 @@ paths:
           required: true
           description: The id of the ToDo to be updated
           type: integer
+        - name: body
+          in: body
+          description: To Do object that needs to be added to database
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
       responses:
         200:
             description: Succesfully update
