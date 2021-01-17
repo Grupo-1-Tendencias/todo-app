@@ -25,8 +25,12 @@ export class Controller {
 
   async deleteByID(req, res) {
     try {
-      await ToDoService.deleteByID(req.params.id);
-      res.status(200).json({ message: "To Do successfully removed" });
+      var a = await ToDoService.deleteByID(req.params.id);
+      if (a == true) {
+        res.status(200).json({ message: "To Do successfully removed" });
+      } else {
+        res.status(404).json({ message: "To Do Not found" });
+      }
     } catch (error) {
       res.status(500).send(error);
     }
