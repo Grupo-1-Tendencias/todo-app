@@ -25,6 +25,11 @@ aliases:
       only:
         - main
 
+  - &filter-dev-only
+    branches:
+      only:
+        - dev
+
   - &slack-success-notification
     event: pass
     custom: |
@@ -277,16 +282,16 @@ workflows:
       - push-server-staging:
           requires: [run-app-tests]
           context: slack-secrets
-          # add not master/main branch filter
+          filters: *filter-dev-only
       - deploy-server-staging:
           requires: [push-server-staging]
           context: slack-secrets
-          # add not master/main branch filter
+          filters: *filter-dev-only
       - push-client-staging:
           requires: [run-app-tests]
           context: slack-secrets
-          # add not master/main branch filter
+          filters: *filter-dev-only
       - deploy-client-staging:
           requires: [push-client-staging]
           context: slack-secrets
-          # add not master/main branch filter
+          filters: *filter-dev-only
