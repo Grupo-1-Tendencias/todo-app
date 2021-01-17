@@ -19,18 +19,13 @@ export class ToDoService {
     return { ...newTodo, key: newTodoRef.key };
   }
   async deleteByID(key) {
-    var ref = this.db.ref("todo/" + key);
-    var success = await ref.once("value").then(function (snapshot) {
-      var data = snapshot.val();
-
-      if (data != null) {
-        ref.remove();
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return success;
+    const ref = await this.db.ref("todo/" + key);
+    const todo = await ref.once("value");
+    if (todo.val() != null) {
+      ref.remove();
+      return true;
+    }
+    return false;
   }
 }
 export default new ToDoService();
