@@ -31,6 +31,20 @@ export class ToDoService {
         return matchTodos;
     }
 
+    async all() {
+        const allTodos = await this.db.ref("todo").once("value");
+        var arr = [];
+        allTodos.forEach((snapshot) => {
+            arr.push(snapshot.val());
+        });
+        return arr;
+    }
+
+    async byId(id) {
+        const todo = await this.db.ref("todo/" + id).once("value");
+        return todo.val();
+    }
+
     async deleteByID(key) {
         const ref = await this.db.ref("todo/" + key);
         const todo = await ref.once("value");
@@ -38,7 +52,7 @@ export class ToDoService {
             ref.remove();
             return true;
         }
-        return false;
     }
 }
+
 export default new ToDoService();
