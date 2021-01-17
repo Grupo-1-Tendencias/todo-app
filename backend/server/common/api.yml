@@ -66,6 +66,23 @@ paths:
         404:
           description: To Do not found
 
+  /todo/delete/{id}:
+    delete:
+      tags:
+        - To Do
+      description: Deletes a todo by its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be deleted
+          type: string
+      responses:
+        200:
+          description: Succesfully deleted
+        404:
+          description: Key not found
+
   /todo/stub:
     post:
       tags:
@@ -89,3 +106,20 @@ paths:
       responses:
         200:
           description: Return the API specification
+  
+  /todo/update/{id}:
+    post:
+      tags:
+        - To Do
+      description: This is for update users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be updated
+          type: integer
+      responses:
+        200:
+            description: Succesfully update
+        404:
+            description: Key not found
