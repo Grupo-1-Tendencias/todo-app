@@ -1,12 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import App from "./App";
+import Home from "./pages/Home";
 
 test("renders header and body", () => {
-  render(<App />);
+  render(<Home />);
 
   const header = screen.getByTestId("header");
+  const title = screen.getByText(/To Do/i);
   const body = screen.getByTestId("body");
 
   expect(header).toBeInTheDocument();
+  expect(title).toBeInTheDocument();
   expect(body).toBeInTheDocument();
 });
