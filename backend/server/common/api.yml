@@ -82,6 +82,26 @@ paths:
         201:
           description: To Do entry created succesfully
 
+  /todo/search:
+      post:
+        tags:
+          - To Do
+        description: This is for a filtered search
+        parameters:
+          - name: body
+            in: body
+            description: Filter parameters
+            required: true
+            schema:
+              $ref: "#/definitions/ExampleBody"
+        responses:
+          200:
+            description: Search was succesfull
+          400:
+            description: Invalid input. Please note that To Do name is required.
+          500:
+            description: Internal data base error. There were difficulties trying to connect to our database. 
+
   /spec:
     get:
       tags:
