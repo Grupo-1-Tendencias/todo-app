@@ -124,5 +124,24 @@ describe("Todo app test suite", () => {
                     expect(r.statusCode).to.equal(400);
                 });
         });
+
+        it("should send bad request if any filter parameter is used", () => {
+            const searchTodo = {
+                useName: false,
+                useDescription: false,
+                useIsDone: false,
+                useDueDate: false,
+                name: '',
+                description: '',
+                isDone: false,
+                dueDate: ''
+            };
+            return request(Server)
+                .post("/api/todo/search")
+                .send(searchTodo)
+                .then((r) => {
+                    expect(r.statusCode).to.equal(400);
+                });
+        });
     });
 });
