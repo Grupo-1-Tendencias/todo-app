@@ -29,7 +29,6 @@ export class ToDoService {
   }
 
   async updateByID(key) {
-    const ref = await this.db.ref("todo/update/" + key);
 
     // LOCAL DATA 
     const allTodos = [

@@ -25,6 +25,7 @@ export class Controller {
   }
 
   async update(req, res) {
+    
     const wasUpdate = await ToDoService.updateByID(req.params.id);
 
     if (wasUpdate != null) {
@@ -35,6 +36,7 @@ export class Controller {
     } catch (error) {
     res.status(500).send(error);
     console.log(error);
+    
     }
 
   async deleteByID(req, res) {
