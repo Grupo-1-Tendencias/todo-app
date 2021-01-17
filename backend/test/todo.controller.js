@@ -113,6 +113,70 @@ describe("test cases for create controller method", () => {
   });
 });
 
+describe("test cases for get controller method", () => {
+  it("should get an array with all the todos", () => {
+    return request(Server)
+      .get("/api/todo")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body).to.be.an("array");
+      });
+  });
+
+  it("should return a todo object that has a description property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("description")
+          .equal("Do all exercises in page 98");
+      });
+  });
+
+  it("should return a todo object that has a dueDate property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("dueDate")
+          .equal("31-03-2021");
+      });
+  });
+
+  it("should return a todo object that has a isDone property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("isDone")
+          .equal(false);
+      });
+  });
+
+  it("should return a todo object that has a name property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("name")
+          .equal("Math Homework");
+      });
+  });
+});
+
 describe("test cases for delete controller method", () => {
   it("should delete an existing todo given its key", () => {
     const todo = {
