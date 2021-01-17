@@ -21,19 +21,6 @@ definitions:
     title: example
     required:
       - name
-    properties:
-      name:
-        type: string
-        example: Math Homework
-      description:
-        type: string
-        example: Do all exercises in page 98
-      isDone:
-        type: boolean
-        example: false
-      dueDate:
-        type: string
-        example: 31-03-2021
 
 paths:
   /todo:

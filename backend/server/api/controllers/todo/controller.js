@@ -4,7 +4,7 @@ export class Controller {
   stub(req, res) {
     return res.json(req.body);
   }
-  create(req, res) {
+  async create(req, res) {
     const todo = {
       name: req.body.name,
       description: req.body.description || "",
@@ -15,8 +15,8 @@ export class Controller {
       res.status(400).send();
     } else {
       try {
-        ToDoService.db.ref("todo").push(todo);
-        res.status(201).json(todo).send();
+        const newTodo = await ToDoService.create(todo);
+        res.status(201).json(newTodo);
       } catch (error) {
         res.status(500).send();
       }

@@ -12,7 +12,15 @@ export class ToDoService {
     });
     this.db = app.database();
   }
-  
+
+  async create(todo) {
+    const newTodoRef = await this.db.ref("todo").push();
+    await newTodoRef.set(todo);
+    const allTodos = await this.db.ref("todo").once("value");
+    const newTodo = allTodos.child(newTodoRef.key).toJSON();
+    return { ...newTodo, key: newTodoRef.key };
+  }
+
   async all() {
     const allTodos = await this.db.ref("todo").once("value");
     return allTodos;
