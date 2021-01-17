@@ -114,21 +114,13 @@ describe("test cases for create controller method", () => {
 });
 
 describe("test cases for get controller method", () => {
-  it("should get an array with all the todos", () => {
+  it("should get an object with all the todos", () => {
     return request(Server)
       .get("/api/todo")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body).to.be.an("object");
-      });
-  });
-
-  it("should send bad request status code when it receives an id that doesn't exist", () => {
-    return request(Server)
-      .get("/api/todo/dfsdfhskjfg")
-      .then((r) => {
-        expect(r.statusCode).to.equal(404);
       });
   });
 
