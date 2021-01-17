@@ -34,6 +34,8 @@ export class Controller {
             isDone: req.body.isDone,
             dueDate: req.params.dueDate
         };
+        // If the request body is empty, the name property will be undefined
+        // If all the searching filters are false, there is nothing to find, so return bad request
         if (searchTodo.name == undefined ||
             (!searchTodo.useName &&
                 !searchTodo.useDescription &&
