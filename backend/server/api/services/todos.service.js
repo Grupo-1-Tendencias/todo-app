@@ -27,5 +27,27 @@ export class ToDoService {
     }
     return false;
   }
+
+  async updateByID(key) {
+    //const ref = await this.db.ref("todo/update/" + key);
+    //const todo = await ref.once("value");
+
+    const allTodos = [
+      {id: 1, name: "alberto", isDone : false, dueDate : "20/1/2022"},
+      {id: 2, name: "kevin", isDone : false, dueDate : "20/1/2022"},
+      {id: 3, name: "diego", isDone : false, dueDate : "20/1/2022"}
+      ]
+    //POST and PUT method doesnt work, need to configure api.yml
+    allTodos.forEach(function(value){     
+        //allTodos.update({"id" : });
+        if(key == value.id) { 
+          return res.send(value); 
+          //res.status(201).send();
+        }
+        //value.name = req.body.name;          
+    });   
+    return res.send(null);
+  }
+
 }
 export default new ToDoService();

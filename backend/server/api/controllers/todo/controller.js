@@ -25,28 +25,17 @@ export class Controller {
   }
 
   async update(req, res) {
-    const userId = req.params.id;
-    //const userName = req.params.name;
+    const wasUpdate = await ToDoService.updateByID(req.params.id);
 
-    const todo = {};
-    const allTodos = [
-      {id: 1, name: "alberto", isDone : false, dueDate : "20/1/2022"},
-      {id: 2, name: "kevin", isDone : false, dueDate : "20/1/2022"},
-      {id: 3, name: "diego", isDone : false, dueDate : "20/1/2022"}
-      ]
-
-    //POST and PUT method doesnt work, need to configure api.yml
-    allTodos.forEach(function(value){     
-        //allTodos.update({"id" : });
-        if(userId == value.id) { 
-          res.send(value); 
-          //res.status(201).send();
-        }
-        //value.name = req.body.name;          
-    });
-    
-    return res.send("User not found.");
-  }
+    if (wasUpdate != null) {
+      res.status(200).json({ message: "User finded" });
+    } else {
+      res.status(404).json({ message: "User not founded" });
+    }
+    } catch (error) {
+    res.status(500).send(error);
+    console.log(error);
+    }
 
   async deleteByID(req, res) {
     try {
