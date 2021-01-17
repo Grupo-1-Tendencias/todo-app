@@ -1,0 +1,49 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Group 1 Final Project",
+  "workspaces": [
+    "backend",
+    "client"
+  ],
+  "main": "index.js",
+  "repository": "git@github.com:Grupo-1-Tendencias/todo-app.git",
+  "author": "Fernando Gruning <fernandojgruning@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "concurrently -n w: yarn:build:*",
+    "build:client": "yarn workspace client build",
+    "build:backend": "yarn workspace backend compile",
+    "start": "concurrently -n w: yarn:start:*",
+    "start:client": "yarn workspace client start",
+    "start:backend": "yarn workspace backend dev:debug",
+    "lint": "concurrently -n fix:client,fix:backend yarn:lint:client yarn:lint:backend",
+    "lint:backend": "yarn workspace backend lint",
+    "lint:client": "yarn workspace client lint",
+    "lint:fix": "concurrently -n w: yarn:lint:fix:*",
+    "lint:fix:backend": "yarn workspace backend lint:fix",
+    "lint:fix:client": "yarn workspace client lint:fix",
+    "test": "concurrently -n test:client,test:backend yarn:test:client yarn:test:backend",
+    "test:client": "yarn workspace client test",
+    "test:backend": "yarn workspace backend test",
+    "test:debug:backend": "yarn workspace backend test:debug",
+    "coverage": "concurrently -n w: yarn:coverage:*",
+    "coverage:client": "yarn workspace client test -- --coverage",
+    "coverage:backend": "yarn workspace backend test --coverage"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
+    "prettier": "2.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}

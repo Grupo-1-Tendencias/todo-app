@@ -1,0 +1,108 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: To Do API
+  description: To Do Backend Endpoints
+basePath: /api
+tags:
+  - name: To Do
+    description: App Endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+
+paths:
+  /todo:
+    get:
+      tags:
+        - To Do
+      description: Fetch all To Do entries
+      responses:
+        200:
+          description: Returns all To Do
+    post:
+      tags:
+        - To Do
+      description: Create a new To Do entry
+      parameters:
+        - name: body
+          in: body
+          description: To Do object that needs to be added to database
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        201:
+          description: To Do entry created succesfully
+        400:
+          description: Invalid input. Please note that To Do name is required.
+        500:
+          description: Internal data base error. There were difficulties trying to append the new To Do to our database,
+
+  /todo/{id}:
+    get:
+      tags:
+        - To Do
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the To Do to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the To Do with the specified id
+        404:
+          description: To Do not found
+
+  /todo/delete/{id}:
+    delete:
+      tags:
+        - To Do
+      description: Deletes a todo by its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be deleted
+          type: string
+      responses:
+        200:
+          description: Succesfully deleted
+        404:
+          description: Key not found
+
+  /todo/stub:
+    post:
+      tags:
+        - To Do
+      description: This is only for testing
+      parameters:
+        - name: body
+          in: body
+          description: This is only for testing
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        201:
+          description: To Do entry created succesfully
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification

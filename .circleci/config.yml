@@ -1,0 +1,297 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+# Use a package of configuration called an orb.
+orbs:
+  slack: circleci/slack@4.2.0
+  heroku: circleci/heroku@1.2.3
+
+aliases:
+  - &restore-yarn-cache
+    name: Restore yarnpkg cache
+    keys:
+      - yarn-packages-{{ checksum "yarn.lock" }}
+      - yarn-packages-
+
+  - &save-yarn-cache
+    name: Save yarnpkg cache
+    paths:
+      - ~/.cache/yarn
+    key: yarn-packages-{{ checksum "yarn.lock" }}
+
+  - &install-yarn sudo npm install --global --force yarn@1.22.4
+
+  - &filter-main-only
+    branches:
+      only:
+        - main
+
+  - &filter-dev-only
+    branches:
+      only:
+        - dev
+
+  - &slack-success-notification
+    event: pass
+    custom: |
+      {
+        "text": "",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "✅ *Success* Job ${CIRCLE_JOB}#${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+            }
+          },
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "View job"
+                },
+                "url": "${CIRCLE_BUILD_URL}"
+              }
+            ]
+          }
+        ]
+      }
+
+  - &slack-fail-notification
+    event: fail
+    custom: |
+      {
+        "text": "",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "❌ *Failure* Job ${CIRCLE_JOB}#${CIRCLE_BUILD_NUM} `${CIRCLE_PROJECT_REPONAME}` on `${CIRCLE_BRANCH}`"
+            }
+          },
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "View job"
+                },
+                "url": "${CIRCLE_BUILD_URL}"
+              }
+            ]
+          }
+        ]
+      }
+
+commands:
+  push-docker-image:
+    description: Push a Docker image to the Heroku Docker registry.
+    parameters:
+      api-key:
+        default: HEROKU_API_KEY
+        type: env_var_name
+      path:
+        default: "."
+        type: string
+      app-name:
+        default: $HEROKU_APP_NAME
+        type: string
+      no_output_timeout:
+        default: 10m
+        type: string
+      process-types:
+        default: web
+        type: string
+      recursive:
+        default: false
+        type: boolean
+    steps:
+      - run:
+          command: heroku container:login
+      - run:
+          command: |
+            cd << parameters.path >> && heroku container:push -a <<parameters.app-name>> <<# parameters.recursive>>--recursive<</parameters.recursive>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+          no_output_timeout: << parameters.no_output_timeout >>
+          name: Push Docker image to Heroku
+  release-docker-image:
+    description: Release a Docker image from the Heroku Docker registry.
+    parameters:
+      api-key:
+        default: HEROKU_API_KEY
+        type: env_var_name
+      path:
+        default: "."
+        type: string
+      app-name:
+        default: $HEROKU_APP_NAME
+        type: string
+      no_output_timeout:
+        default: 10m
+        type: string
+      process-types:
+        default: web
+        type: string
+    steps:
+      - run:
+          command: heroku container:login
+      - run:
+          command: |
+            cd << parameters.path >> && heroku container:release -a <<parameters.app-name>> <<# parameters.process-types>><<parameters.process-types>><</parameters.process-types>>
+          no_output_timeout: << parameters.no_output_timeout >>
+          name: Release Docker image to Heroku
+
+executors:
+  default-executor:
+    docker:
+      - image: circleci/node:12.16.1
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+        environment:
+          AWS-REGION: us-east-2
+
+jobs:
+  check-format:
+    executor: default-executor
+    steps:
+      - checkout
+      - run: *install-yarn
+      - attach_workspace: { at: "." }
+      - run: yarn prettier --check .
+
+  checkout-code:
+    executor: default-executor
+    steps:
+      - checkout
+      - restore_cache: *restore-yarn-cache
+      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
+      - run:
+          name: Check if yarn.lock changed during install
+          command: git diff --exit-code yarn.lock
+      - save_cache: *save-yarn-cache
+      - persist_to_workspace:
+          root: "."
+          paths: [node_modules]
+
+  build:
+    executor: default-executor
+    steps:
+      - checkout
+      - restore_cache: *restore-yarn-cache
+      - run: *install-yarn
+      - save_cache: *save-yarn-cache
+      - attach_workspace: { at: "." }
+      - run: yarn build
+      - slack/notify: *slack-fail-notification
+
+  lint:
+    executor: default-executor
+    steps:
+      - checkout
+      - restore_cache: *restore-yarn-cache
+      - run: *install-yarn
+      - save_cache: *save-yarn-cache
+      - attach_workspace: { at: "." }
+      - run: yarn lint
+      - slack/notify: *slack-fail-notification
+
+  run-app-tests:
+    executor: default-executor
+    steps:
+      - checkout
+      - restore_cache: *restore-yarn-cache
+      - run: *install-yarn
+      - save_cache: *save-yarn-cache
+      - attach_workspace: { at: "." }
+      - run: CI=true yarn test
+      - slack/notify: *slack-fail-notification
+
+  push-server-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - push-docker-image:
+          app-name: g1-todo-app-server-staging
+          path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  deploy-server-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - release-docker-image:
+          app-name: g1-todo-app-server-staging
+          path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  push-client-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - push-docker-image:
+          app-name: g1-todo-app-staging
+          path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  deploy-client-staging:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - release-docker-image:
+          app-name: g1-todo-app-staging
+          path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+# Orchestrate or schedule a set of jobs
+workflows:
+  todo-app:
+    jobs:
+      - checkout-code
+      - check-format:
+          requires: [checkout-code]
+      - build:
+          requires: [check-format]
+          context: slack-secrets
+      - lint:
+          requires: [check-format]
+          context: slack-secrets
+      - run-app-tests:
+          requires: [build]
+          context: slack-secrets
+      - push-server-staging:
+          requires: [run-app-tests]
+          context: slack-secrets
+          filters: *filter-dev-only
+      - deploy-server-staging:
+          requires: [push-server-staging]
+          context: slack-secrets
+          filters: *filter-dev-only
+      - push-client-staging:
+          requires: [run-app-tests]
+          context: slack-secrets
+          filters: *filter-dev-only
+      - deploy-client-staging:
+          requires: [push-client-staging]
+          context: slack-secrets
+          filters: *filter-dev-only
