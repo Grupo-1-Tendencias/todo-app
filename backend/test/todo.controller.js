@@ -121,7 +121,7 @@ describe("test cases for get controller method", () => {
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body).to.be.an("object");
-      })
+      });
   });
 
   it("should send bad request status code when it receives an id that doesn't exist", () => {
@@ -168,7 +168,7 @@ describe("test cases for get controller method", () => {
           .to.be.an("object")
           .that.has.property("isDone")
           .equal(false);
-      })
+      });
   });
 
   it("should return a todo object that has a name property", () => {
@@ -183,7 +183,4 @@ describe("test cases for get controller method", () => {
           .equal("Math Homework");
       });
   });
-
-
-
 });
