@@ -1,6 +1,7 @@
 import chai from "chai";
 import request from "supertest";
 import Server from "../server";
+import todosService from "../server/api/services/todos.service";
 
 const expect = chai.expect;
 
@@ -143,5 +144,24 @@ describe("Todo app test suite", () => {
                     expect(r.statusCode).to.equal(400);
                 });
         });
+
+        it("should send OK if one parameter is used", () => {
+            const searchTodo = {
+                useName: true,
+                useDescription: false,
+                useIsDone: false,
+                useDueDate: false,
+                name: 'Do french homework',
+                description: '',
+                isDone: false,
+                dueDate: ''
+            };
+            return request(Server)
+                .post("/api/todo/search")
+                .send(searchTodo)
+                .then((r) => {
+                    expect(r.statusCode).to.equal(200);
+                })
+        })
     });
 });
