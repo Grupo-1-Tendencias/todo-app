@@ -112,3 +112,32 @@ describe("test cases for create controller method", () => {
       });
   });
 });
+
+describe("test cases for update controller method", () => {
+  it("Should request user data in json file",  () => {
+    /*
+    function allTodos() {
+      return [
+          {id: 1, name: "alberto", isDone : false, dueDate : 20/1/2022},
+          {id: 2, name: "kevin", isDone : false, dueDate : 20/1/2022},
+          {id: 3, name: "diego", isDone : false, dueDate : 20/1/2022},
+      ];
+      }*/
+    //return request(Server).post("/api/todo/update/1").send(allTodos());
+    /*
+    return request(Server).get("/api/todo/1").then((r) => expect("Content-Type", /json/)
+    .then((r) => {
+      expect(r.body)
+        .to.be.an.an("object")
+        .that.has.property("name")
+        .equal("alberto");
+    })); 
+    */
+    return request(Server)
+   .get("/api/todo/1")
+   .then((r) => {
+     expect(r.statusCode).to.equal(201);
+   });
+
+  });
+  });
