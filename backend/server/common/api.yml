@@ -66,6 +66,23 @@ paths:
         404:
           description: To Do not found
 
+  /todo/delete/{id}:
+    delete:
+      tags:
+        - To Do
+      description: Deletes a todo by its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be deleted
+          type: string
+      responses:
+        200:
+          description: Succesfully deleted
+        404:
+          description: Key not found
+
   /todo/stub:
     post:
       tags:
@@ -83,24 +100,24 @@ paths:
           description: To Do entry created succesfully
 
   /todo/search:
-      post:
-        tags:
-          - To Do
-        description: This is for a filtered search
-        parameters:
-          - name: body
-            in: body
-            description: Filter parameters
-            required: true
-            schema:
-              $ref: "#/definitions/ExampleBody"
-        responses:
-          200:
-            description: Search was succesfull
-          400:
-            description: Invalid input. Please note that To Do name is required.
-          500:
-            description: Internal data base error. There were difficulties trying to connect to our database. 
+    post:
+      tags:
+        - To Do
+      description: This is for a filtered search
+      parameters:
+        - name: body
+          in: body
+          description: Filter parameters
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Search was succesfull
+        400:
+          description: Invalid input. Please note that To Do name is required.
+        500:
+          description: Internal data base error. There were difficulties trying to connect to our database.
 
   /spec:
     get:

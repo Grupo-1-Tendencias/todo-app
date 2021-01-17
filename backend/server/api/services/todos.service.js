@@ -30,5 +30,15 @@ export class ToDoService {
         // Just in case
         return matchTodos;
     }
+
+    async deleteByID(key) {
+        const ref = await this.db.ref("todo/" + key);
+        const todo = await ref.once("value");
+        if (todo.val() != null) {
+            ref.remove();
+            return true;
+        }
+        return false;
+    }
 }
 export default new ToDoService();

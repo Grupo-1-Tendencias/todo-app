@@ -4,6 +4,7 @@ export class Controller {
     stub(req, res) {
         return res.json(req.body);
     }
+
     async create(req, res) {
         const todo = {
             name: req.body.name,
@@ -18,8 +19,23 @@ export class Controller {
                 const newTodo = await ToDoService.create(todo);
                 res.status(201).json(newTodo);
             } catch (error) {
-                res.status(500).send();
+                res.status(500).send(error);
+                console.log(error);
             }
+        }
+    }
+
+    async deleteByID(req, res) {
+        try {
+            const wasDeleted = await ToDoService.deleteByID(req.params.id);
+            if (wasDeleted == true) {
+                res.status(200).json({ message: "To Do successfully removed" });
+            } else {
+                res.status(404).json({ message: "To Do Not found" });
+            }
+        } catch (error) {
+            res.status(500).send(error);
+            console.log(error);
         }
     }
 
@@ -40,6 +56,7 @@ export class Controller {
             else res.status(500).send();
         }
     }
+}
 }
 
 export default new Controller();
