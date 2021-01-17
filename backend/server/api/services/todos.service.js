@@ -18,5 +18,6 @@ export class ToDoService {
     const newTodo = allTodos.child(newTodoRef.key).toJSON();
     return { ...newTodo, key: newTodoRef.key };
   }
+
 }
 export default new ToDoService();
