@@ -179,6 +179,7 @@ describe("Todo app test suite", () => {
                 .post("/api/todo/search")
                 .send(searchTodo)
                 .then((r) => {
+                    // Iterate over every match and assure that has the same name as the filter 
                     for (const todo of r.body) {
                         expect(todo)
                             .to.be.an.an("object")

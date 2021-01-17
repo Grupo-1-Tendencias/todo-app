@@ -24,6 +24,7 @@ export class ToDoService {
             const todos = snapshot.val();
             for (const property in todos) {
                 let todo = todos[property];
+                //If the respective filter is used and the fields match, then add that todo to the match array
                 if (searchTodo.useName && searchTodo.name === todo.name) matchTodos.push(todo);
                 else if (searchTodo.useDescription && searchTodo.description === todo.description) matchTodos.push(todo);
                 else if (searchTodo.useIsDone && searchTodo.isDone === todo.isDone) matchTodos.push(todo);
@@ -34,6 +35,7 @@ export class ToDoService {
             console.log("The read failed: " + errorObject.code);
             return -1;
         });
+        // Just in case
         return matchTodos;
     }
 }

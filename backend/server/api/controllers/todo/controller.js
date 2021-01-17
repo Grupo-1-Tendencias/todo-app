@@ -43,6 +43,7 @@ export class Controller {
                 !searchTodo.useDueDate)) res.status(400).send();
         else {
             const result = await ToDoService.search(searchTodo);
+            // -1 is the returned value when the connection to the db fails
             if (result != -1) res.status(200).json(result).send();
             else res.status(500).send();
         }
