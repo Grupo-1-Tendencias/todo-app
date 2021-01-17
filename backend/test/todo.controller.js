@@ -114,7 +114,7 @@ describe("test cases for create controller method", () => {
 });
 
 describe("test cases for delete controller method", () => {
-  it('should delete an existing todo given its key', ()=>{
+  it("should delete an existing todo given its key", () => {
     const todo = {
       name: "Testing delete",
       description: "Pages 23 and 24 exercises 1-9",
@@ -125,12 +125,11 @@ describe("test cases for delete controller method", () => {
       .post("/api/todo")
       .send(todo)
       .then((r) => {
-        return request(Server).delete('/api/todo/delete/' + r.body.key)
-        .then((x) => {
-          expect(x.statusCode).to.equal(200);
-        })
+        return request(Server)
+          .delete("/api/todo/delete/" + r.body.key)
+          .then((x) => {
+            expect(x.statusCode).to.equal(200);
+          });
       });
-
-  })
-
+  });
 });

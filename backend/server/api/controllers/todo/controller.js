@@ -22,6 +22,15 @@ export class Controller {
       }
     }
   }
+
+  async deleteByID(req, res) {
+    try {
+      await ToDoService.deleteByID(req.params.id);
+      res.status(200).json({ message: "To Do successfully removed" });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
 }
 
 export default new Controller();

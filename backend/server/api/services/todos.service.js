@@ -18,6 +18,19 @@ export class ToDoService {
     const newTodo = allTodos.child(newTodoRef.key).toJSON();
     return { ...newTodo, key: newTodoRef.key };
   }
+  async deleteByID(key) {
+    var ref = this.db.ref("todo/" + key);
+    var success = await ref.once("value").then(function (snapshot) {
+      var data = snapshot.val();
 
+      if (data != null) {
+        ref.remove();
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return success;
+  }
 }
 export default new ToDoService();
