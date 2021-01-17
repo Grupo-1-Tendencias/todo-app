@@ -25,9 +25,7 @@ export class Controller {
   }
 
   async all(req, res) {
-    res
-      .status(200)
-      .json(await ToDoService.all());
+    res.status(200).json(await ToDoService.all());
   }
 
   async byId(req, res) {
