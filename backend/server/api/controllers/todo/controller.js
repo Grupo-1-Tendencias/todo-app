@@ -12,7 +12,7 @@ export class Controller {
       dueDate: req.body.dueDate || "",
     };
     if (todo.name == undefined) {
-      res.status(400);
+      res.status(400).end();
     } else {
       try {
         const newTodo = await ToDoService.create(todo);
@@ -31,9 +31,9 @@ export class Controller {
   async byId(req, res) {
     if (req.params.id) {
       const result = await ToDoService.byId(req.params.id);
-      if (result !== "null") res.status(200).json(result).send();
-      else res.status(404);
-    } else res.status(404);
+      if (result) res.status(200).json(result);
+      else res.status(404).end();
+    } else res.status(404).end();
   }
 
   async deleteByID(req, res) {

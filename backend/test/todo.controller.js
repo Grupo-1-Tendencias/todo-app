@@ -144,7 +144,7 @@ describe("test cases for get controller method", () => {
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
-          .to.be.an("object")
+          .to.be.an("array")
           .that.has.property("dueDate")
           .equal("31-03-2021");
       });
