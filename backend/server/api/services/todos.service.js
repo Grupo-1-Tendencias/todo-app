@@ -23,14 +23,14 @@ export class ToDoService {
     const allTodos = await this.db.ref("todo").once("value");
     var arr = [];
     allTodos.forEach((snapshot) => {
-      arr.push(snapshot.val());
+      arr.push({ ...snapshot.val(), key: snapshot.key });
     });
     return arr;
   }
 
-  async byId(id) {
-    const todo = await this.db.ref("todo/" + id).once("value");
-    return todo.val();
+  async byId(key) {
+    const todo = await this.db.ref("todo/" + key).once("value");
+    return { ...todo.val(), key: todo.key };
   }
 
   async deleteByID(key) {
