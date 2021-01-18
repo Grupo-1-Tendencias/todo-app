@@ -20,7 +20,7 @@ function route(path) {
 }
 
 export const apiRoutes = {
-  getTodos: route("/"),
+  getTodos: route(""),
   getTodo: route("/:id"),
   createTodo: route("/"),
   updateTodo: route("/update/:id"),
