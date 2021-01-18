@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
+import { apiRoutes } from "../../util/routes";
 
 function Home() {
   const [todos, setTodos] = useState([]);
@@ -10,7 +11,7 @@ function Home() {
   useEffect(() => {
     async function getTodos() {
       try {
-        const response = await fetch("/api/todo");
+        const response = await fetch(apiRoutes.getTodos());
 
         const data = await response.json();
         setTodos(data.slice(0, 50));
@@ -33,9 +34,9 @@ function Home() {
       ) : (
         <div>
           <ul className="todos-list" style={{ padding: 0 }}>
-            {todos.map((todo) => (
+            {todos.map((todo, idx) => (
               <li
-                key={todo.id}
+                key={`${idx}-${todo.id}`}
                 className="todo-item"
                 style={{ border: `1px solid black`, display: `flex` }}
               >

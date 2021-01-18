@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "../../components/Layout";
+import { apiRoutes } from "../../util/routes";
 
 export default function CreateTodo() {
   const [newTodo, setNewTodo] = useState({
@@ -23,7 +24,7 @@ export default function CreateTodo() {
     try {
       setLoading(true);
 
-      const response = await fetch("/api/todo", {
+      const response = await fetch(apiRoutes.createTodo(), {
         method: "POST",
         headers: {
           accept: "application/json",

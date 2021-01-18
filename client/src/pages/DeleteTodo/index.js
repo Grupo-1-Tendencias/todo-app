@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
+import { apiRoutes } from "../../util/routes";
 
 export default function DeleteTodo() {
   const [error, setError] = useState(null);
@@ -13,7 +14,7 @@ export default function DeleteTodo() {
     e.preventDefault();
 
     try {
-      await fetch(`/api/todo/delete/${id}`, {
+      await fetch(apiRoutes.deleteTodo({ id }), {
         method: "DELETE",
       });
       history.push("/");
@@ -25,7 +26,7 @@ export default function DeleteTodo() {
   useEffect(() => {
     async function getTodo() {
       try {
-        const response = await fetch(`/api/todo/${id}`);
+        const response = await fetch(apiRoutes.getTodo({ id }));
         if (response.status === 404) {
           throw new Error("Todo with given id not found");
         }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
+import { apiRoutes } from "../../util/routes";
 
 export default function TodoDetail() {
   const [error, setError] = useState(null);
@@ -11,7 +12,7 @@ export default function TodoDetail() {
   useEffect(() => {
     async function getTodo() {
       try {
-        const response = await fetch(`/api/todo/${id}`);
+        const response = await fetch(apiRoutes.getTodo({ id }));
         if (response.status === 404) {
           throw new Error("Todo with given id not found");
         }
