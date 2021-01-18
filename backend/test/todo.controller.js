@@ -4,20 +4,6 @@ import Server from "../server";
 
 const expect = chai.expect;
 
-describe("Stub test for controller and server", () => {
-  it("should send an object to controller.stub and receive the same object", () =>
-    request(Server)
-      .post("/api/todo/stub")
-      .send({ name: "test" })
-      .expect("Content-Type", /json/)
-      .then((r) => {
-        expect(r.body)
-          .to.be.an.an("object")
-          .that.has.property("name")
-          .equal("test");
-      }));
-});
-
 describe("test cases for create controller method", () => {
   it("should add a new todo when body has all properties", () => {
     const todo = {
@@ -126,33 +112,33 @@ describe("test cases for get controller method", () => {
 
   it("should return a todo object that has a description property", () => {
     return request(Server)
-      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRM6-yyPU89oPdSVUrJ")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
           .to.be.an("object")
           .that.has.property("description")
-          .equal("Do all exercises in page 98");
+          .equal("Pages 23 and 24 exercises 1-9");
       });
   });
 
   it("should return a todo object that has a dueDate property", () => {
     return request(Server)
-      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRM6-yyPU89oPdSVUrJ")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
           .to.be.an("object")
           .that.has.property("dueDate")
-          .equal("31-03-2021");
+          .equal("20-04-2021");
       });
   });
 
   it("should return a todo object that has a isDone property", () => {
     return request(Server)
-      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRM6-yyPU89oPdSVUrJ")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
@@ -165,27 +151,27 @@ describe("test cases for get controller method", () => {
 
   it("should return a todo object that has a name property", () => {
     return request(Server)
-      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRM6-yyPU89oPdSVUrJ")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
           .to.be.an("object")
           .that.has.property("name")
-          .equal("Math Homework");
+          .equal("French homework");
       });
   });
 
   it("should return a todo that has a key property", () => {
     return request(Server)
-      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .get("/api/todo/-MRM6-yyPU89oPdSVUrJ")
       .expect("Content-Type", /json/)
       .then((r) => {
         expect(r.statusCode).to.equal(200);
         expect(r.body)
           .to.be.an("object")
           .that.has.property("key")
-          .equal("-MRBI_Ad4mDVvuDt3dQP");
+          .equal("-MRM6-yyPU89oPdSVUrJ");
       });
   });
 
@@ -224,6 +210,20 @@ describe("test cases for delete controller method", () => {
       .delete("/api/todo/delete/" + a)
       .then((f) => {
         expect(f.statusCode).to.equal(404);
+      });
+  });
+});
+
+describe("test cases for update controller method", () => {
+  it("should send a 200 status code when it modifies the user data", () => {
+    const todo = {
+      name: "this is a test name",
+    };
+    return request(Server)
+      .put("/api/todo/update/" + "-MRBcPvhNIP9VvWxUT4g")
+      .send(todo)
+      .then((x) => {
+        expect(x.statusCode).to.equal(200);
       });
   });
 });

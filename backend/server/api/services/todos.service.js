@@ -62,6 +62,10 @@ export class ToDoService {
       return true;
     }
   }
+  async updateById(key, upd) {
+    const updated = await this.db.ref("todo").child(key).update(upd);
+    return updated;
+  }
 }
 
 export default new ToDoService();

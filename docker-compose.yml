@@ -12,6 +12,8 @@ services:
     ports:
       - 5000:5000
     working_dir: /usr/src/app/backend
+    networks:
+      - backend
     volumes:
       - ./backend:/usr/src/app/backend:cached
       - /usr/src/app/backend/node_modules
@@ -24,6 +26,12 @@ services:
     ports:
       - 3000:3000
     working_dir: /usr/src/app/client
+    networks:
+      - backend
     volumes:
       - ./client:/usr/src/app/client:cached
       - /usr/src/app/client/node_modules
+
+networks:
+  backend:
+    driver: "bridge"
