@@ -11,6 +11,7 @@ import Home from "../../pages/Home";
 import CreateTodo from "../../pages/CreateTodo";
 import TodoDetail from "../../pages/TodoDetail";
 import UpdateTodo from "../../pages/UpdateTodo";
+import DeleteTodo from "../../pages/DeleteTodo";
 
 function App() {
   return (
@@ -39,6 +40,16 @@ function App() {
             </Route>
             <Route path={`/detail/:id`}>
               <TodoDetail />
+            </Route>
+          </Switch>
+        </Route>
+        <Route path="/delete" data-testid="route">
+          <Switch>
+            <Route exact path="/delete">
+              <Redirect to="/" />
+            </Route>
+            <Route path={`/delete/:id`}>
+              <DeleteTodo />
             </Route>
           </Switch>
         </Route>
