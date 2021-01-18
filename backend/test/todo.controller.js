@@ -113,6 +113,91 @@ describe("test cases for create controller method", () => {
   });
 });
 
+describe("test cases for get controller method", () => {
+  it("should get an array with all the todos", () => {
+    return request(Server)
+      .get("/api/todo")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body).to.be.an("array");
+      });
+  });
+
+  it("should return a todo object that has a description property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("description")
+          .equal("Do all exercises in page 98");
+      });
+  });
+
+  it("should return a todo object that has a dueDate property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("dueDate")
+          .equal("31-03-2021");
+      });
+  });
+
+  it("should return a todo object that has a isDone property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("isDone")
+          .equal(false);
+      });
+  });
+
+  it("should return a todo object that has a name property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("name")
+          .equal("Math Homework");
+      });
+  });
+
+  it("should return a todo that has a key property", () => {
+    return request(Server)
+      .get("/api/todo/-MRBI_Ad4mDVvuDt3dQP")
+      .expect("Content-Type", /json/)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+        expect(r.body)
+          .to.be.an("object")
+          .that.has.property("key")
+          .equal("-MRBI_Ad4mDVvuDt3dQP");
+      });
+  });
+
+  it("should give a 404 error when passed a key that doesn't exist", () => {
+    return request(Server)
+      .get("/api/todo/-fdsf")
+      .then((r) => {
+        expect(r.statusCode).to.equal(404);
+      });
+  });
+});
+
 describe("test cases for delete controller method", () => {
   it("should delete an existing todo given its key", () => {
     const todo = {
@@ -139,6 +224,73 @@ describe("test cases for delete controller method", () => {
       .delete("/api/todo/delete/" + a)
       .then((f) => {
         expect(f.statusCode).to.equal(404);
+      });
+  });
+});
+
+describe("test cases for update controller method", () => {
+  it("should send a 200 status code when it modifies the user data", () => {
+    const todo = {
+      name: "this is a test name",
+    };
+    return request(Server)
+      .put("/api/todo/update/" + "-MRBcPvhNIP9VvWxUT4g")
+      .send(todo)
+      .then((x) => {
+        expect(x.statusCode).to.equal(200);
+      });
+  });
+});
+
+describe("test cases for search controller method", () => {
+  it("should send bad request if any filter parameter is used", () => {
+    const searchTodo = {
+      name: "",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        expect(r.statusCode).to.equal(400);
+      });
+  });
+
+  it("should send OK if one parameter is used", () => {
+    const searchTodo = {
+      name: "Do french homework",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+      });
+  });
+
+  it("should return all the todos that matched", () => {
+    const searchTodo = {
+      name: "Do french homework",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        // Iterate over every match and assure that has the same name as the filter
+        for (const todo of r.body) {
+          expect(todo)
+            .to.be.an.an("object")
+            .that.has.property("name")
+            .equal(searchTodo.name);
+        }
       });
   });
 });
