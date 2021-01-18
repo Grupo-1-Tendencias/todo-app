@@ -1,0 +1,47 @@
+.items {
+  height: 80%;
+  overflow: auto;
+}
+
+.item {
+  height: 44.5px;
+  display: grid;
+  grid-template-columns: 1fr 7fr 2fr;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  border: 1px solid #949494;
+  justify-self: center;
+}
+
+.mark.on {
+  border-color: transparent;
+  background-color: var(--success);
+}
+
+.controls {
+  display: flex;
+  /* width: 20%; */
+  align-items: center;
+  justify-content: space-around;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.icon.view {
+  background-color: var(--info);
+}
+
+.icon.delete {
+  background-color: var(--danger);
+}
