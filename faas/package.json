@@ -1,14 +1,14 @@
 {
-    "name": "lambda-func",
-    "version": "1.0.0",
-    "description": "lambda function",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Grupo 1",
-    "license": "MIT",
-    "dependencies": {
-        "nodemailer": "^6.4.17"
-    }
+  "name": "lambda-func",
+  "version": "1.0.0",
+  "description": "lambda function",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grupo 1",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.4.17"
+  }
 }
