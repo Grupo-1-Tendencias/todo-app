@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 
 function Home() {
@@ -32,18 +33,18 @@ function Home() {
       ) : (
         <div>
           <ul className="todos-list" style={{ padding: 0 }}>
-            {todos.map((post) => (
+            {todos.map((todo) => (
               <li
-                key={post.id}
+                key={todo.id}
                 className="todo-item"
                 style={{ border: `1px solid black`, display: `flex` }}
               >
-                <div>
-                  <p className="title">{post.name}</p>
-                  <p className="body">{post.description}</p>
-                  <p>Date {post.dueDate}</p>
-                  {post.isDone && <p>Done</p>}
-                </div>
+                <Link to={`/detail/${todo.key}`}>
+                  <p className="title">{todo.name}</p>
+                  <p className="body">{todo.description}</p>
+                  <p>Date {todo.dueDate}</p>
+                  {todo.isDone && <p>Done</p>}
+                </Link>
               </li>
             ))}
           </ul>
