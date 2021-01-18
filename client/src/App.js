@@ -1,15 +1,9 @@
 import React from "react";
 import "./App.css";
+import TodoWrapper from "./TodoWrapper";
 
 function App() {
-  return (
-    <div className="App">
-      <main role="main">
-        <header className="App-header">To Do</header>
-        <div data-testid="body" className="App-body"></div>
-      </main>
-    </div>
-  );
+  return <TodoWrapper />;
 }
 
 export default App;
