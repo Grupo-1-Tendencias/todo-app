@@ -11,13 +11,23 @@ test("renders header and body", () => {
   expect(body).toBeInTheDocument();
 });
 
-// // test("renders input fields", () => {
-// //   render(<TodoWrapper />);
-// //   const nameField = screen.getByPlaceholderText("Enter title");
-// //   const descriptionField = screen.getAllByPlaceholderText("Enter description");
-// //   const dueDateField = screen.getByPlaceholderText("Enter due date");
+// test("renders API items", async () => {
+//   render(<App />);
 
-// //   expect(nameField).toBeInTheDocument();
-// //   expect(descriptionField).toBeInTheDocument();
-// //   expect(dueDateField).toBeInTheDocument();
+//   const items = await screen.findAllByTestId("api-item");
+//   items.forEach((item) => {
+//     expect(item).toBeInTheDocument();
+//   });
+//   cleanup();
+// });
+
+// test("renders input fields", () => {
+//   render(<TodoWrapper />);
+//   const nameField = screen.getByPlaceholderText("Enter title");
+//   const descriptionField = screen.getAllByPlaceholderText("Enter description");
+//   const dueDateField = screen.getByPlaceholderText("Enter due date");
+
+//   expect(nameField).toBeInTheDocument();
+//   expect(descriptionField).toBeInTheDocument();
+//   expect(dueDateField).toBeInTheDocument();
 // });
