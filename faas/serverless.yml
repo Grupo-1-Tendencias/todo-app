@@ -7,7 +7,7 @@
 # The `service` block is the name of the service
 service: lambda-func
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 # The `provider` block defines where your service will be deployed
 provider:
@@ -24,7 +24,7 @@ functions:
           path: hello-world
           method: get
           cors: true
-  
+
   shareTodo:
     handler: handler.shareTodo
     events:
