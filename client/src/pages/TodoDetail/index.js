@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 
 export default function TodoDetail() {
@@ -42,6 +42,13 @@ export default function TodoDetail() {
           <p>{todo.dueDate}</p>
           <p>{`${todo.isDone}`}</p>
           <p>{todo.description}</p>
+
+          <Link to={`/update/${todo.key}`}>
+            <button>Update</button>
+          </Link>
+          <Link to={`/delete/${todo.key}`}>
+            <button>Delete</button>
+          </Link>
         </div>
       )}
     </Layout>
