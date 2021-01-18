@@ -49,7 +49,10 @@ function Home() {
                 </Link>
                 <div className="controls">
                   <Link className="icon view" to={`/update/${todo.key}`}></Link>
-                  <Link className="icon delete" to={`/delete/${todo.key}`}></Link>
+                  <Link
+                    className="icon delete"
+                    to={`/delete/${todo.key}`}
+                  ></Link>
                 </div>
                 {/* <Link to={`/detail/${todo.key}`}>
                   <p className="title">{todo.name}</p>
