@@ -21,16 +21,16 @@ module.exports.shareTodo = (event, context, callback) => {
 
     let requestBody = JSON.parse(event.body);
 
-    if (requestBody.name === undefined) callback("400 Invalid Input");
+    if (requestBody.todo === undefined || requestBody.todo.name === undefined) callback("400 Invalid Input");
 
     message = `<h2>Name</h2>
-        <p>${requestBody.name}</p>
+        <p>${requestBody.todo.name}</p>
         <h2>Description</h2>
-        <p>${requestBody.description}</p>
+        <p>${requestBody.todo.description}</p>
         <h2>Is done?</h2>
-        <p>${requestBody.isDone}</p>
+        <p>${requestBody.todo.isDone}</p>
         <h2>Due date</h2>
-        <p>${requestBody.dueDate}</p>`;
+        <p>${requestBody.todo.dueDate}</p>`;
 
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
