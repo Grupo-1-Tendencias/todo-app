@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-// import TodoWrapper from "../../../TodoWrapper";
-import App from "./App";
+import App from "./index";
 
 test("renders header and body", () => {
   render(<App />);
-  const header = screen.getByText(/To Do/i);
+
+  const header = screen.getByTestId("header");
   const body = screen.getByTestId("body");
 
   expect(header).toBeInTheDocument();

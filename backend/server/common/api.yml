@@ -21,19 +21,6 @@ definitions:
     title: example
     required:
       - name
-    properties:
-      name:
-        type: string
-        example: Math Homework
-      description:
-        type: string
-        example: Do all exercises in page 98
-      isDone:
-        type: boolean
-        example: false
-      dueDate:
-        type: string
-        example: 31-03-2021
 
 paths:
   /todo:
@@ -72,12 +59,29 @@ paths:
           in: path
           required: true
           description: The id of the To Do to retrieve
-          type: integer
+          type: string
       responses:
         200:
           description: Return the To Do with the specified id
         404:
           description: To Do not found
+
+  /todo/delete/{id}:
+    delete:
+      tags:
+        - To Do
+      description: Deletes a todo by its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be deleted
+          type: string
+      responses:
+        200:
+          description: Succesfully deleted
+        404:
+          description: Key not found
 
   /todo/stub:
     post:
@@ -95,6 +99,26 @@ paths:
         201:
           description: To Do entry created succesfully
 
+  /todo/search:
+    post:
+      tags:
+        - To Do
+      description: This is for a filtered search
+      parameters:
+        - name: body
+          in: body
+          description: Filter parameters
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Search was succesfull
+        400:
+          description: Invalid input. Please note that To Do name is required.
+        500:
+          description: Internal data base error. There were difficulties trying to connect to our database.
+
   /spec:
     get:
       tags:
@@ -102,3 +126,26 @@ paths:
       responses:
         200:
           description: Return the API specification
+
+  /todo/update/{id}:
+    put:
+      tags:
+        - To Do
+      description: This is for update users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the ToDo to be updated
+          type: string
+        - name: body
+          in: body
+          description: To Do object that needs to be added to database
+          required: true
+          schema:
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Succesfully update
+        404:
+          description: Key not found
