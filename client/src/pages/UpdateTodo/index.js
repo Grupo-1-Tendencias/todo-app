@@ -70,7 +70,7 @@ export default function UpdateTodo() {
           <p>Loading...</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{display:"grid"}}>
           <input
             type="text"
             placeholder="Enter name"
@@ -84,19 +84,22 @@ export default function UpdateTodo() {
             onChange={handleChange("dueDate")}
             value={todo.dueDate}
           />
-          <input
-            type="checkbox"
-            placeholder="Enter isDone"
-            onChange={handleChange("isDone")}
-            checked={todo.isDone}
-          />
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <input
+              type="checkbox"
+              placeholder="Enter isDone"
+              onChange={handleChange("isDone")}
+              checked={todo.isDone}
+            />
+            <label>Is Done?</label>
+          </div>
           <textarea
             type="text"
             placeholder="Enter description"
             onChange={handleChange("description")}
             value={todo.description}
           />
-          <button type="submit">Update</button>
+          <button style={{width:"25%"}} type="submit">Update</button>
         </form>
       )}
     </Layout>
