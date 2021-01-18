@@ -9,6 +9,7 @@
   "author": "Grupo 1",
   "license": "MIT",
   "dependencies": {
-    "nodemailer": "^6.4.17"
+    "nodemailer": "^6.4.17",
+    "prettier": "^2.2.1"
   }
 }

@@ -21,16 +21,16 @@ module.exports.shareTodo = (event, context, callback) => {
 
     let requestBody = JSON.parse(event.body);
 
-    if (requestBody.receiver === undefined || requestBody.todo === undefined || requestBody.todo.name === undefined) callback("400 Invalid Input");
+    if (requestBody.name === undefined) callback("400 Invalid Input");
 
     message = `<h2>Name</h2>
-        <p>${requestBody.todo.name}</p>
+        <p>${requestBody.name}</p>
         <h2>Description</h2>
-        <p>${requestBody.todo.description}</p>
+        <p>${requestBody.description}</p>
         <h2>Is done?</h2>
-        <p>${requestBody.todo.isDone}</p>
+        <p>${requestBody.isDone}</p>
         <h2>Due date</h2>
-        <p>${requestBody.todo.dueDate}</p>`;
+        <p>${requestBody.dueDate}</p>`;
 
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -43,8 +43,8 @@ module.exports.shareTodo = (event, context, callback) => {
 
     var mailOptions = {
         from: 'tendenciasaplicaciones@gmail.com',
-        to: requestBody.receiver,
-        subject: 'Hey! Checkout my todo!',
+        to: 'tendenciasaplicaciones@gmail.com',
+        subject: 'Hey! You just created a new todo!',
         html: message
     };
 
@@ -58,7 +58,7 @@ module.exports.shareTodo = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    message: `Mail sended to ${requestBody.receiver}`
+                    message: `Mail sended!`
                 }),
             };
             callback(null, response);
