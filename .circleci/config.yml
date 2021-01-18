@@ -311,7 +311,7 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - release-docker-image:
-          app-name: g1-todo-app
+          app-name: group-1-todo-app
           path: ./client
       - slack/notify: *slack-fail-notification
       - slack/notify: *slack-success-notification
