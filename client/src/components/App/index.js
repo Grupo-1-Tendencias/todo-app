@@ -10,6 +10,7 @@ import {
 import Home from "../../pages/Home";
 import CreateTodo from "../../pages/CreateTodo";
 import TodoDetail from "../../pages/TodoDetail";
+import UpdateTodo from "../../pages/UpdateTodo";
 
 function App() {
   return (
@@ -21,8 +22,15 @@ function App() {
         <Route path="/create" data-testid="route">
           <CreateTodo />
         </Route>
-        <Route path="/update/:id" data-testid="route">
-          <h1>PUT /todo/:id</h1>
+        <Route path="/update" data-testid="route">
+          <Switch>
+            <Route exact path="/update">
+              <Redirect to="/" />
+            </Route>
+            <Route path={`/update/:id`}>
+              <UpdateTodo />
+            </Route>
+          </Switch>
         </Route>
         <Route path="/detail" data-testid="route">
           <Switch>
