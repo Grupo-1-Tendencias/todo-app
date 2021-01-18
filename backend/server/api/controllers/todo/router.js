@@ -7,5 +7,6 @@ export default express
   .get("/:id", controller.byId)
   .post("/", controller.create)
   .post("/stub", controller.stub)
-  .post("/search", controller.search)
-  .delete("/delete/:id", controller.deleteByID);
+  .delete("/delete/:id", controller.deleteByID)
+  .put("/update/:id", controller.updateById)
+  .post("/search", controller.search);

@@ -51,6 +51,35 @@ export class Controller {
     }
   }
 
+  async updateById(req, res) {
+    const key = req.params.id;
+    if (key == undefined) {
+      res.status(400);
+    } else {
+      try {
+        res.send(await ToDoService.byId(key));
+        let toBeUpdated = await ToDoService.byId(key);
+        if (req.body.name != null) {
+          toBeUpdated.name = req.body.name;
+        }
+        if (req.body.description != null) {
+          toBeUpdated.description = req.body.description;
+        }
+        if (req.body.dueDate != null) {
+          toBeUpdated.dueDate = req.body.dueDate;
+        }
+        if (req.body.isDone != null) {
+          toBeUpdated.isDone = req.body.isDone;
+        }
+        const updated = ToDoService.updateById(key, toBeUpdated);
+        res.status(200).json(updated);
+      } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
+      }
+    }
+  }
+
   async search(req, res) {
     const searchTodo = {
       name: req.body.name,
