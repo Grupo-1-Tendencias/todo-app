@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Home from "../../pages/Home";
 import CreateTodo from "../../pages/CreateTodo";
+import TodoDetail from "../../pages/TodoDetail";
 import UpdateTodo from "../../pages/UpdateTodo";
 
 function App() {
@@ -31,8 +32,15 @@ function App() {
             </Route>
           </Switch>
         </Route>
-        <Route path="/detail/:id" data-testid="route">
-          <h1>GET /todo/:id</h1>
+        <Route path="/detail" data-testid="route">
+          <Switch>
+            <Route exact path="/detail">
+              <Redirect to="/" />
+            </Route>
+            <Route path={`/detail/:id`}>
+              <TodoDetail />
+            </Route>
+          </Switch>
         </Route>
       </Switch>
     </Router>
