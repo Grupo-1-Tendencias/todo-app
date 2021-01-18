@@ -46,3 +46,7 @@ a {
   text-decoration: none;
   color: black;
 }
+
+ul {
+  padding: 0;
+}

@@ -227,3 +227,70 @@ describe("test cases for delete controller method", () => {
       });
   });
 });
+
+describe("test cases for update controller method", () => {
+  it("should send a 200 status code when it modifies the user data", () => {
+    const todo = {
+      name: "this is a test name",
+    };
+    return request(Server)
+      .put("/api/todo/update/" + "-MRBcPvhNIP9VvWxUT4g")
+      .send(todo)
+      .then((x) => {
+        expect(x.statusCode).to.equal(200);
+      });
+  });
+});
+
+describe("test cases for search controller method", () => {
+  it("should send bad request if any filter parameter is used", () => {
+    const searchTodo = {
+      name: "",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        expect(r.statusCode).to.equal(400);
+      });
+  });
+
+  it("should send OK if one parameter is used", () => {
+    const searchTodo = {
+      name: "Do french homework",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        expect(r.statusCode).to.equal(200);
+      });
+  });
+
+  it("should return all the todos that matched", () => {
+    const searchTodo = {
+      name: "Do french homework",
+      description: "",
+      isDone: false,
+      dueDate: "",
+    };
+    return request(Server)
+      .post("/api/todo/search")
+      .send(searchTodo)
+      .then((r) => {
+        // Iterate over every match and assure that has the same name as the filter
+        for (const todo of r.body) {
+          expect(todo)
+            .to.be.an.an("object")
+            .that.has.property("name")
+            .equal(searchTodo.name);
+        }
+      });
+  });
+});
