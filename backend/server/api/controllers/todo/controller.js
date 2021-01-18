@@ -53,11 +53,10 @@ export class Controller {
 
   async updateById(req, res) {
     const key = req.params.id;
-    if (key == undefined) {
+    if (key === undefined) {
       res.status(400);
     } else {
       try {
-        res.send(await ToDoService.byId(key));
         let toBeUpdated = await ToDoService.byId(key);
         if (req.body.name != null) {
           toBeUpdated.name = req.body.name;
@@ -71,8 +70,8 @@ export class Controller {
         if (req.body.isDone != null) {
           toBeUpdated.isDone = req.body.isDone;
         }
-        const updated = ToDoService.updateById(key, toBeUpdated);
-        res.status(200).json(updated);
+        await ToDoService.updateById(key, toBeUpdated);
+        res.status(200).json(await ToDoService.byId(key));
       } catch (error) {
         res.status(500).send(error);
         console.log(error);
