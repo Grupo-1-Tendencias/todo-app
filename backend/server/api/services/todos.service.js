@@ -19,6 +19,27 @@ export class ToDoService {
     return { ...newTodo, key: newTodoRef.key };
   }
 
+  async search(todoName) {
+    let matchTodos = [];
+    await this.db
+      .ref("todo")
+      .orderByChild("name")
+      .equalTo(todoName)
+      .once(
+        "value",
+        function (snapshot) {
+          matchTodos = Object.values(snapshot.val());
+          return matchTodos;
+        },
+        function (errorObject) {
+          console.log("The read failed: " + errorObject.code);
+          return -1;
+        }
+      );
+    // Just in case
+    return matchTodos;
+  }
+
   async all() {
     const allTodos = await this.db.ref("todo").once("value");
     var arr = [];
@@ -40,7 +61,7 @@ export class ToDoService {
       ref.remove();
       return true;
     }
-    return false;
   }
 }
+
 export default new ToDoService();
