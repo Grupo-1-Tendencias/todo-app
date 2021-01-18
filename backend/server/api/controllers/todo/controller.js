@@ -4,6 +4,7 @@ export class Controller {
   stub(req, res) {
     return res.json(req.body);
   }
+
   async create(req, res) {
     const todo = {
       name: req.body.name,
@@ -31,8 +32,8 @@ export class Controller {
   async byId(req, res) {
     if (req.params.id) {
       const result = await ToDoService.byId(req.params.id);
-      if (result) res.status(200).json(result);
-      else res.status(404).end();
+      if (result.name == undefined) res.status(404).end();
+      else res.status(200).json(result);
     } else res.status(404).end();
   }
 
@@ -47,6 +48,25 @@ export class Controller {
     } catch (error) {
       res.status(500).send(error);
       console.log(error);
+    }
+  }
+
+  async search(req, res) {
+    const searchTodo = {
+      name: req.body.name,
+      description: req.body.description,
+      isDone: req.body.isDone,
+      dueDate: req.params.dueDate,
+    };
+    // If the request body is empty, the name property will be undefined
+    // If name is empty, there is nothing to find, so return bad request
+    if (searchTodo.name == undefined || searchTodo.name === "")
+      res.status(400).send();
+    else {
+      const result = await ToDoService.search(searchTodo.name);
+      // -1 is the returned value when the connection to the db fails
+      if (result != -1) res.status(200).json(result).send();
+      else res.status(500).send();
     }
   }
 }
