@@ -8,4 +8,5 @@ export default express
   .post("/", controller.create)
   .post("/stub", controller.stub)
   .delete("/delete/:id", controller.deleteByID)
-  .put("/update/:id", controller.updateById);
+  .put("/update/:id", controller.updateById)
+  .post("/search", controller.search);
