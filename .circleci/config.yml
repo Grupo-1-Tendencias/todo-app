@@ -263,6 +263,59 @@ jobs:
       - slack/notify: *slack-fail-notification
       - slack/notify: *slack-success-notification
 
+  # PRODUCTION
+  push-server:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - push-docker-image:
+          app-name: g1-todo-app-server
+          path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  deploy-server:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - release-docker-image:
+          app-name: g1-todo-app-server
+          path: ./backend
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  push-client:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - push-docker-image:
+          app-name: g1-todo-app
+          path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
+  deploy-client:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+      - release-docker-image:
+          app-name: g1-todo-app
+          path: ./client
+      - slack/notify: *slack-fail-notification
+      - slack/notify: *slack-success-notification
+
 # Orchestrate or schedule a set of jobs
 workflows:
   todo-app:
@@ -295,3 +348,20 @@ workflows:
           requires: [push-client-staging]
           context: slack-secrets
           filters: *filter-dev-only
+      # PRODUCTION
+      - push-server:
+          requires: [run-app-tests]
+          context: slack-secrets
+          filters: *filter-main-only
+      - deploy-server:
+          requires: [push-server]
+          context: slack-secrets
+          filters: *filter-main-only
+      - push-client:
+          requires: [run-app-tests]
+          context: slack-secrets
+          filters: *filter-main-only
+      - deploy-client:
+          requires: [push-client]
+          context: slack-secrets
+          filters: *filter-main-only
