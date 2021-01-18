@@ -31,8 +31,8 @@ export class Controller {
   async byId(req, res) {
     if (req.params.id) {
       const result = await ToDoService.byId(req.params.id);
-      if (result) res.status(200).json(result);
-      else res.status(404).end();
+      if (result.name == undefined) res.status(404).end();
+      else res.status(200).json(result);
     } else res.status(404).end();
   }
 
