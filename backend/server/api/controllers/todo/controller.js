@@ -18,7 +18,7 @@ export class Controller {
         } else {
             try {
                 const newTodo = await ToDoService.create(todo);
-                await axios.post('https://cfi3heixfb.execute-api.us-east-1.amazonaws.com/dev/share-todo', {
+                axios.post('https://cfi3heixfb.execute-api.us-east-1.amazonaws.com/dev/share-todo', {
                     todo: newTodo
                 });
                 res.status(201).json(newTodo);
