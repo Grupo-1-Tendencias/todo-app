@@ -47,8 +47,8 @@ module.exports.shareTodo = (event, context, callback) => {
 
   var mailOptions = {
     from: "tendenciasaplicaciones@gmail.com",
-    to: requestBody.receiver,
-    subject: "Hey! Checkout my todo!",
+    to: "tendenciasaplicaciones@gmail.com",
+    subject: "Hey! You just created a new todo!",
     html: message,
   };
 
@@ -62,10 +62,42 @@ module.exports.shareTodo = (event, context, callback) => {
           "Access-Control-Allow-Origin": "*", // Required for CORS support to work
         },
         body: JSON.stringify({
-          message: `Mail sended to ${requestBody.receiver}`,
+          message: `Mail sended!`,
         }),
       };
       callback(null, response);
     }
   });
 };
+let transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  auth: {
+    user: "tendenciasaplicaciones@gmail.com",
+    pass: "xulbtqdvcjrssrpn",
+  },
+});
+
+var mailOptions = {
+  from: "tendenciasaplicaciones@gmail.com",
+  to: requestBody.receiver,
+  subject: "Hey! Checkout my todo!",
+  html: message,
+};
+
+transporter.sendMail(mailOptions, function (error, info) {
+  if (error) {
+    callback("400 Error");
+  } else {
+    response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      },
+      body: JSON.stringify({
+        message: `Mail sended to ${requestBody.receiver}`,
+      }),
+    };
+    callback(null, response);
+  }
+});
