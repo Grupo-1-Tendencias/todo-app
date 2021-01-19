@@ -39,9 +39,20 @@ export default function TodoDetail() {
         </div>
       ) : (
         <div>
-          <h3>{todo.name}</h3>
-          <p>{todo.dueDate}</p>
-          <p>{`${todo.isDone}`}</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              className="title"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <div className={`mark ${todo.isDone ? "on" : "off"}`}></div>
+              <div className="name" style={{ marginLeft: "5px" }}>
+                {todo.name}
+              </div>
+            </div>
+            <div>
+              <div>{todo.dueDate}</div>
+            </div>
+          </div>
           <p>{todo.description}</p>
 
           <Link to={`/update/${todo.key}`}>
