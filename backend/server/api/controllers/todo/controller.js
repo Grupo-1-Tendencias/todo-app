@@ -1,4 +1,5 @@
 import ToDoService from "../../services/todos.service";
+const axios = require("axios");
 
 export class Controller {
   stub(req, res) {
@@ -17,6 +18,12 @@ export class Controller {
     } else {
       try {
         const newTodo = await ToDoService.create(todo);
+        axios.post(
+          "https://cfi3heixfb.execute-api.us-east-1.amazonaws.com/dev/share-todo",
+          {
+            todo: newTodo,
+          }
+        );
         res.status(201).json(newTodo);
       } catch (error) {
         res.status(500).send(error);
